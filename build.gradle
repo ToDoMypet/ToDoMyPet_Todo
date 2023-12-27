@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.todomypet'
-version = '0.0.1-SNAPSHOT'
+version = 'v1'
 
 java {
     sourceCompatibility = '17'
@@ -34,6 +34,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+
+    // swagger
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 }
 
 dependencyManagement {
