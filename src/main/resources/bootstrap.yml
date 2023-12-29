@@ -2,10 +2,10 @@ server:
   port: 8082
 spring:
   application:
-    name: pet-service
+    name: todo-service
   config:
     import: http://3.39.47.157/8888/
 #    import: http://127.0.0.1:8888/
-    name: pet-service
+    name: todo-service
     activate:
       on-profile: default
