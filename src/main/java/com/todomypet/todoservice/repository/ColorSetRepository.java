@@ -11,4 +11,7 @@ import java.util.List;
 public interface ColorSetRepository extends Neo4jRepository<ColorSet, String> {
     @Query("MATCH (c:ColorSet) RETURN c")
     List<ColorSet> getAllColors();
+
+    @Query("MATCH (c:ColorSet{colorCode:$colorCode}) RETURN c")
+    ColorSet getColorSetByColorCode(String colorCode);
 }

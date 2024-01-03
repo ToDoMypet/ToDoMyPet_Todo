@@ -12,8 +12,6 @@ import org.springframework.data.neo4j.core.schema.Property;
 public class ColorSet {
     @Id
     private String id;
-    @Property("category")
-    private String category;
     @Property("colorCode")
     private String colorCode;
     @Property("bgCode")

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 @EnableNeo4jRepositories
 public interface HaveRepository extends Neo4jRepository<Have, Long> {
-    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (c:Category{id:$categoryId} " +
-            "CREATE (u)-[:HAVE]->(c)")
-    void createHaveRelationshipBetweenUserAndCategory(String userId, String categoryId);
+    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (c:Category{id:$categoryId}) " +
+            "CREATE (u)-[:HAVE{colorCode:$colorCode, bgCode:$bgCode, textCode:$textCode}]->(c)")
+    void createHaveRelationshipBetweenUserAndCategory(String userId, String categoryId,
+                                                      String colorCode, String bgCode, String textCode);
 }
