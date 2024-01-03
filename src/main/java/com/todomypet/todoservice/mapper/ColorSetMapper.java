@@ -1,7 +1,7 @@
 package com.todomypet.todoservice.mapper;
 
 import com.todomypet.todoservice.dto.color.AddColorReqDTO;
-import com.todomypet.todoservice.node.ColorSet;
+import com.todomypet.todoservice.domain.node.ColorSet;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

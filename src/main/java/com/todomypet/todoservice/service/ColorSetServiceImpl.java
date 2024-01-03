@@ -3,13 +3,12 @@ package com.todomypet.todoservice.service;
 import com.todomypet.todoservice.dto.color.AddColorReqDTO;
 import com.todomypet.todoservice.dto.color.GetAllColorsResDTO;
 import com.todomypet.todoservice.mapper.ColorSetMapper;
-import com.todomypet.todoservice.node.ColorSet;
+import com.todomypet.todoservice.domain.node.ColorSet;
 import com.todomypet.todoservice.repository.ColorSetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

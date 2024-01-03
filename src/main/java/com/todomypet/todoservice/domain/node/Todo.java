@@ -1,4 +1,4 @@
-package com.todomypet.todoservice.node;
+package com.todomypet.todoservice.domain.node;
 
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;

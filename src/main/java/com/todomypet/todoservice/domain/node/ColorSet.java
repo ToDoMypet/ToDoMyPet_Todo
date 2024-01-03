@@ -1,4 +1,4 @@
-package com.todomypet.todoservice.node;
+package com.todomypet.todoservice.domain.node;
 
 import lombok.Builder;
 import lombok.Getter;
