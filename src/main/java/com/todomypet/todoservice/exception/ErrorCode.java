@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
+    WRONG_CATEGORY_ID(HttpStatus.BAD_REQUEST, "T001", "잘못된 카테고리 id입니다.");
     ;
 
     private final HttpStatus httpStatus;

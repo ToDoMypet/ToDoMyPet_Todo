@@ -13,4 +13,8 @@ public interface HaveRepository extends Neo4jRepository<Have, Long> {
             "CREATE (u)-[:HAVE{colorCode:$colorCode, bgCode:$bgCode, textCode:$textCode}]->(c)")
     void createHaveRelationshipBetweenUserAndCategory(String userId, String categoryId,
                                                       String colorCode, String bgCode, String textCode);
+
+    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (c:Category{id:$categoryId}) " +
+            "RETURN EXISTS((u)-[:HAVE]->(c))")
+    boolean existsHaveRelationshipBetweenUserAndCategory(String userId, String categoryId);
 }
