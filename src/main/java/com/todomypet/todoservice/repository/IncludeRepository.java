@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 public interface IncludeRepository extends Neo4jRepository<Include, Long> {
 
     @Query("MATCH (t:Todo{id:$todoId}) WITH t MATCH (c:Category{id:$categoryId}) " +
-            "CREATE (c)-[:Include]->(t)")
+            "CREATE (c)-[:INCLUDE]->(t)")
     void createIncludeRelationshipBetweenCategoryAndTodo(String todoId, String categoryId);
 
-    @Query("MATCH (c:Category{id:$categoryId}) WITH c (t:Todo{id:$todoId}) " +
-            "RETURN EXISTS((c)-[:INCLUDE]->(c))")
+    @Query("MATCH (c:Category{id:$categoryId}) WITH c MATCH (t:Todo{id:$todoId}) " +
+            "RETURN EXISTS((c)-[:INCLUDE]->(t))")
     boolean existsIncludeRelationshipBetweenCategoryAndTodo(String categoryId, String todoId);
 }
