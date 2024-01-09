@@ -15,6 +15,9 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Service
 @AllArgsConstructor
 public class TodoServiceImpl implements TodoService {
@@ -31,8 +34,12 @@ public class TodoServiceImpl implements TodoService {
             throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
         };
 
-        Todo todo = Todo.builder().content(addTodoReqDTO.getContent()).startedAt(addTodoReqDTO.getStartedAt())
-                .endedAt(addTodoReqDTO.getEndedAt()).receiveAlert(addTodoReqDTO.isReceiveAlert()).clearYN(false)
+        Todo todo = Todo.builder().content(addTodoReqDTO.getContent())
+                .startedAt(LocalDateTime.parse(DateTimeFormatter
+                        .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(addTodoReqDTO.getStartedAt())))
+                .endedAt(LocalDateTime.parse(DateTimeFormatter
+                        .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(addTodoReqDTO.getEndedAt())))
+                .receiveAlert(addTodoReqDTO.isReceiveAlert()).clearYN(false)
                 .getExperiencePointOrNot(false).markOnTheCalenderOrNot(addTodoReqDTO.isMarkOnTheCalenderOrNot())
                 .alertAt(addTodoReqDTO.getAlertAt()).build();
 
