@@ -14,7 +14,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping("/category")
-    public SuccessResDTO<AddCategoryResDTO> addColor(@RequestHeader String userId,
+    public SuccessResDTO<AddCategoryResDTO> addCategory(@RequestHeader String userId,
                                                      @RequestBody AddCategoryReqDTO addCategoryReqDTO) {
         AddCategoryResDTO response = categoryService.addCategory(userId, addCategoryReqDTO);
         return new SuccessResDTO<AddCategoryResDTO>(response);
