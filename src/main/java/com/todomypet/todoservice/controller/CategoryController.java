@@ -19,4 +19,10 @@ public class CategoryController {
         AddCategoryResDTO response = categoryService.addCategory(userId, addCategoryReqDTO);
         return new SuccessResDTO<AddCategoryResDTO>(response);
     }
+
+    @DeleteMapping("/category/{categoryId}")
+    public SuccessResDTO<Void> deleteCategory(@RequestHeader String userId, @PathVariable String categoryId) {
+        categoryService.deleteCategory(userId, categoryId);
+        return new SuccessResDTO<Void>(null);
+    }
 }

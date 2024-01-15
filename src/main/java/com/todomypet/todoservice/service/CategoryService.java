@@ -5,4 +5,6 @@ import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
 
 public interface CategoryService {
     AddCategoryResDTO addCategory(String userId, AddCategoryReqDTO addCategoryReqDTO);
+
+    void deleteCategory(String userId, String categoryId);
 }
