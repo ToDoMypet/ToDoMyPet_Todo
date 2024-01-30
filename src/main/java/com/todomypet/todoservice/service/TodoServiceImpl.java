@@ -10,7 +10,6 @@ import com.todomypet.todoservice.repository.IncludeRepository;
 import com.todomypet.todoservice.repository.TodoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,12 +25,13 @@ public class TodoServiceImpl implements TodoService {
     private final HaveRepository haveRepository;
     private final TodoRepository todoRepository;
     private final IncludeRepository includeRepository;
-    private final UserServiceClient userServiceClient;
+    private final PetServiceClient petServiceClient;
 
 
     @Override
+    @Transactional
     public AddTodoResDTO addTodo(String userId, AddTodoReqDTO addTodoReqDTO) {
-        if (!haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, addTodoReqDTO.getCategoryId())) {
+        if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, addTodoReqDTO.getCategoryId()) == null) {
             throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
         };
 
@@ -57,7 +57,7 @@ public class TodoServiceImpl implements TodoService {
         String categoryId = clearTodoReqDTO.getCategoryId();
         String todoId = clearTodoReqDTO.getTodoId();
 
-        if (!haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, categoryId)){
+        if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, categoryId) == null){
             throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
         }
         if (!includeRepository.existsIncludeRelationshipBetweenCategoryAndTodo(categoryId, todoId)) {
@@ -65,9 +65,14 @@ public class TodoServiceImpl implements TodoService {
         }
 
         if (!todoRepository.isGetExperiencePoint(todoId)) {
-            String petSeq = userServiceClient.getMainPet(userId).getData();
-            userServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
-                    .petSeqId(petSeq).experiencePoint(5).build());
+            try {
+                String petSeq = petServiceClient.getMainPet(userId).getData();
+                petServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
+                        .petSeqId(petSeq).experiencePoint(5).build());
+            } catch (Exception e) {
+                throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);
+            }
+
         }
 
         todoRepository.updateClearYNAndGetExperienceByTodoId(clearTodoReqDTO.getTodoId());

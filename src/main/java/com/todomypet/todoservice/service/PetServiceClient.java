@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
-@FeignClient(name="user-service", url="${feign.user.url}")
-public interface UserServiceClient {
-    @PutMapping(value = "/pet/update-exp", consumes = "application/json")
+@FeignClient(name="pet-service", url="${feign.pet.url}")
+public interface PetServiceClient {
+    @PutMapping(value = "/update-exp", consumes = "application/json")
     FeignClientResDTO<UpdateExperiencePointResDTO> updateExperiencePoint(@RequestHeader String userId,
                                                                          @RequestBody UpdateExperiencePointReqDTO req);
 
-    @GetMapping(value = "/pet/get-main-pet", consumes = "application/json")
+    @GetMapping(value = "/get-main-pet", consumes = "application/json")
     FeignClientResDTO<String> getMainPet(@RequestHeader String userId);
 }

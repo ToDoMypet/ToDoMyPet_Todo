@@ -26,8 +26,7 @@ public class TodoController {
         return new SuccessResDTO<AddTodoResDTO>(response);
     }
 
-    // todo: 로컬 테스트 필요
-    @Operation(summary = "투두 달성", description = "투두를 달성합니다. **아직 로컬테스트 완료되지 않음**")
+    @Operation(summary = "투두 달성", description = "투두를 달성합니다.")
     @PostMapping("/todo/clear")
     public SuccessResDTO<Void> clearTodo(@RequestHeader String userId,
                                          @RequestBody ClearTodoReqDTO clearTodoReqDTO) {
