@@ -2,10 +2,7 @@ package com.todomypet.todoservice.service;
 
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
-import com.todomypet.todoservice.dto.todo.AddTodoReqDTO;
-import com.todomypet.todoservice.dto.todo.AddTodoResDTO;
-import com.todomypet.todoservice.dto.todo.ClearTodoReqDTO;
-import com.todomypet.todoservice.dto.todo.GetTodoByMonthResDTO;
+import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
 import com.todomypet.todoservice.exception.ErrorCode;
 import com.todomypet.todoservice.repository.HaveRepository;
@@ -96,6 +93,22 @@ public class TodoServiceImpl implements TodoService {
                 .todoStartedAt("2024-02-27").todoEndedAt(null)
                 .categoryTextColorCode("#00C41F")
                 .categoryBgColorCode("#CDFFD5").build());
+        return response;
+    }
+
+    @Override
+    public List<GetTodoByDayResDTO> getTodoByDay(String userId, String day) {
+        List<GetTodoByDayResDTO> response = new ArrayList<>();
+        List<TodoInGetTodoByDayDTO> data1 = new ArrayList<>();
+        data1.add(TodoInGetTodoByDayDTO.builder().content("투두마이펫 UI 디자인 작업").clearYN(false).alertAt(null).alertType(null).build());
+        data1.add(TodoInGetTodoByDayDTO.builder().content("업무일지 작성하기").clearYN(true).alertAt("11:00:00").alertType(null).build());
+        List<TodoInGetTodoByDayDTO> data2 = new ArrayList<>();
+        response.add(GetTodoByDayResDTO.builder().categoryName("프로젝트").categoryColorCode("#FFC558")
+                .todoList(data1).build());
+        data2.add(TodoInGetTodoByDayDTO.builder().content("콘서트 티켓팅").clearYN(false).alertAt("11:00:00").alertType(null).build());
+        data2.add(TodoInGetTodoByDayDTO.builder().content("홍대에서 동기 모임").clearYN(false).alertAt("15:00:00").alertType(null).build());
+        response.add(GetTodoByDayResDTO.builder().categoryName("약속").categoryColorCode("#FF0DBB")
+                .todoList(data2).build());
         return response;
     }
 }

@@ -1,10 +1,7 @@
 package com.todomypet.todoservice.controller;
 
 import com.todomypet.todoservice.dto.SuccessResDTO;
-import com.todomypet.todoservice.dto.todo.AddTodoReqDTO;
-import com.todomypet.todoservice.dto.todo.AddTodoResDTO;
-import com.todomypet.todoservice.dto.todo.ClearTodoReqDTO;
-import com.todomypet.todoservice.dto.todo.GetTodoByMonthResDTO;
+import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -45,5 +42,13 @@ public class TodoController {
                                                                     @PathVariable String month) {
         List<GetTodoByMonthResDTO> response = todoService.getTodoByMonth(userId, month);
         return new SuccessResDTO<List<GetTodoByMonthResDTO>>(response);
+    }
+
+    // todo: alertType 논의 필요
+    @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다. **현재 가데이터**")
+    @GetMapping("/todo/daily/{day}")
+    public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {
+        List<GetTodoByDayResDTO> response = todoService.getTodoByDay(userId, day);
+        return new SuccessResDTO<>(response);
     }
 }
