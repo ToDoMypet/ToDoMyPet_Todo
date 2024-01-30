@@ -5,6 +5,7 @@ import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.AddTodoReqDTO;
 import com.todomypet.todoservice.dto.todo.AddTodoResDTO;
 import com.todomypet.todoservice.dto.todo.ClearTodoReqDTO;
+import com.todomypet.todoservice.dto.todo.GetTodoByMonthResDTO;
 import com.todomypet.todoservice.exception.CustomException;
 import com.todomypet.todoservice.exception.ErrorCode;
 import com.todomypet.todoservice.repository.HaveRepository;
@@ -17,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -70,5 +74,28 @@ public class TodoServiceImpl implements TodoService {
         }
 
         todoRepository.updateClearYNAndGetExperienceByTodoId(clearTodoReqDTO.getTodoId());
+    }
+
+    @Override
+    @Transactional
+    public List<GetTodoByMonthResDTO> getTodoByMonth(String userId, String month) {
+        List<GetTodoByMonthResDTO> response = new ArrayList<>();
+        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("고뇌의 시간")
+                .todoStartedAt(LocalDateTime.parse("2024-01-01")).todoEndedAt(LocalDateTime.parse("2024-02-10"))
+                .categoryTextColorCode("#00C41F")
+                .categoryBgColorCode("#CDFFD5").build());
+        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("캡스톤 프로젝트")
+                .todoStartedAt(LocalDateTime.parse("2024-02-01")).todoEndedAt(LocalDateTime.parse("2024-02-05"))
+                .categoryTextColorCode("#D8A900")
+                .categoryBgColorCode("#FFF1A6").build());
+        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("투두마이펫 회의")
+                .todoStartedAt(LocalDateTime.parse("2024-02-02")).todoEndedAt(null)
+                .categoryTextColorCode("#00C41F")
+                .categoryBgColorCode("#CDFFD5").build());
+        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("누군가의 생일")
+                .todoStartedAt(LocalDateTime.parse("2024-02-27")).todoEndedAt(null)
+                .categoryTextColorCode("#00C41F")
+                .categoryBgColorCode("#CDFFD5").build());
+        return response;
     }
 }
