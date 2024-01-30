@@ -38,7 +38,8 @@ public class TodoController {
         return new SuccessResDTO<Void>(null);
     }
 
-    @Operation(summary = "월별 투두 조회", description = "월별 투두를 조회합니다. **현재 가데이터**")
+    @Operation(summary = "월별 투두 조회", description = "월별 투두를 조회합니다. {month}는 YYYY-MM 형태로 조회하며, " +
+                                                        "해당 월의 전후월 데이터를 함께 조회합니다. **현재 가데이터**")
     @GetMapping("/todo/month/{month}")
     public SuccessResDTO<List<GetTodoByMonthResDTO>> getTodoByMonth(@RequestHeader String userId,
                                                                     @PathVariable String month) {
