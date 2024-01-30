@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 public class GetTodoByMonthResDTO {
     private String id;
     private String todoContent;
-    private LocalDateTime todoStartedAt;
-    private LocalDateTime todoEndedAt;
+    private String todoStartedAt;
+    private String todoEndedAt;
     private String categoryTextColorCode;
     private String categoryBgColorCode;
 }

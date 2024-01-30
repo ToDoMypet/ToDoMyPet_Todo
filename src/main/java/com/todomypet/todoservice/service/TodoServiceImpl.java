@@ -81,19 +81,19 @@ public class TodoServiceImpl implements TodoService {
     public List<GetTodoByMonthResDTO> getTodoByMonth(String userId, String month) {
         List<GetTodoByMonthResDTO> response = new ArrayList<>();
         response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("고뇌의 시간")
-                .todoStartedAt(LocalDateTime.parse("2024-01-01")).todoEndedAt(LocalDateTime.parse("2024-02-10"))
+                .todoStartedAt("2024-01-01").todoEndedAt("2024-02-10")
                 .categoryTextColorCode("#00C41F")
                 .categoryBgColorCode("#CDFFD5").build());
         response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("캡스톤 프로젝트")
-                .todoStartedAt(LocalDateTime.parse("2024-02-01")).todoEndedAt(LocalDateTime.parse("2024-02-05"))
+                .todoStartedAt("2024-02-01").todoEndedAt("2024-02-05")
                 .categoryTextColorCode("#D8A900")
                 .categoryBgColorCode("#FFF1A6").build());
         response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("투두마이펫 회의")
-                .todoStartedAt(LocalDateTime.parse("2024-02-02")).todoEndedAt(null)
+                .todoStartedAt("2024-02-02").todoEndedAt(null)
                 .categoryTextColorCode("#00C41F")
                 .categoryBgColorCode("#CDFFD5").build());
         response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("누군가의 생일")
-                .todoStartedAt(LocalDateTime.parse("2024-02-27")).todoEndedAt(null)
+                .todoStartedAt("2024-02-27").todoEndedAt(null)
                 .categoryTextColorCode("#00C41F")
                 .categoryBgColorCode("#CDFFD5").build());
         return response;
