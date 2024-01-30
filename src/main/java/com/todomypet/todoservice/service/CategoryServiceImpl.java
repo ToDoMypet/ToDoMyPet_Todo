@@ -5,6 +5,8 @@ import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
 import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
+import com.todomypet.todoservice.exception.CustomException;
+import com.todomypet.todoservice.exception.ErrorCode;
 import com.todomypet.todoservice.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +28,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public AddCategoryResDTO addCategory(String userId, AddCategoryReqDTO addCategoryReqDTO) {
         Category category = Category.builder().name(addCategoryReqDTO.getName()).build();
+
+        if (haveRepository.existsHaveRelationshipBetweenUserAndCategoryName(userId, addCategoryReqDTO.getName()) != null) {
+            throw new CustomException(ErrorCode.CATEGORY_NAME_DUPLICATED);
+        }
+
         String savedCategoryId = categoryRepository.save(category).getId();
 
         ColorSet colorSet = colorSetRepository.getColorSetByColorCode(addCategoryReqDTO.getColorCode());
 
         haveRepository.createHaveRelationshipBetweenUserAndCategory(userId, savedCategoryId,
                 colorSet.getColorCode(), colorSet.getBgCode(), colorSet.getTextCode());
-
 
         return AddCategoryResDTO.builder().categoryId(savedCategoryId).build();
     }
