@@ -3,6 +3,7 @@ package com.todomypet.todoservice.controller;
 import com.todomypet.todoservice.dto.SuccessResDTO;
 import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
 import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
+import com.todomypet.todoservice.dto.category.GetCategoryListResDTO;
 import com.todomypet.todoservice.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,9 +19,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @Operation(summary = "카테고리 목록 조회", description = "유저가 가진 카테고리를 모두 조회합니다.")
     @GetMapping("/category")
-    public SuccessResDTO<Void> getCategoryList(@RequestHeader String userId) {
-        return new SuccessResDTO<>(null);
+    public SuccessResDTO<GetCategoryListResDTO> getCategoryList(@RequestHeader String userId) {
+        GetCategoryListResDTO response = categoryService.getCategoryListByUser(userId);
+        return new SuccessResDTO<GetCategoryListResDTO>(response);
     }
 
     @Operation(summary = "카테고리 추가", description = "카테고리를 추가합니다. 카테고리명은 중복 불가능합니다.")

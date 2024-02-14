@@ -5,6 +5,8 @@ import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
 import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
+import com.todomypet.todoservice.dto.category.CategoryInfoResDTO;
+import com.todomypet.todoservice.dto.category.GetCategoryListResDTO;
 import com.todomypet.todoservice.exception.CustomException;
 import com.todomypet.todoservice.exception.ErrorCode;
 import com.todomypet.todoservice.repository.*;
@@ -12,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,5 +55,20 @@ public class CategoryServiceImpl implements CategoryService {
             includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todo.getId(), defaultCategoryId);
             categoryRepository.deleteCategoryById(categoryId);
         }
+    }
+
+    @Override
+    public GetCategoryListResDTO getCategoryListByUser(String userId) {
+        List<Category> categories = categoryRepository.getCategoryListByUserId(userId);
+        List<CategoryInfoResDTO> response = new ArrayList<>();
+        for (Category category : categories) {
+            response.add(CategoryInfoResDTO.builder()
+                    .categoryId(category.getId())
+                    .categoryName(category.getName())
+                    .colorCode(haveRepository
+                            .existsHaveRelationshipBetweenUserAndCategory(userId, category.getId()).getColorCode())
+                    .build());
+        }
+        return GetCategoryListResDTO.builder().categoryList(response).build();
     }
 }
