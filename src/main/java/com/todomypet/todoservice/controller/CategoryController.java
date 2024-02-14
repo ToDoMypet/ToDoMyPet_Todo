@@ -18,6 +18,11 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @GetMapping("/category")
+    public SuccessResDTO<Void> getCategoryList(@RequestHeader String userId) {
+        return new SuccessResDTO<>(null);
+    }
+
     @Operation(summary = "카테고리 추가", description = "카테고리를 추가합니다. 카테고리명은 중복 불가능합니다.")
     @PostMapping("/category")
     public SuccessResDTO<AddCategoryResDTO> addCategory(@RequestHeader String userId,

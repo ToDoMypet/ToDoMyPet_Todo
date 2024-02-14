@@ -12,7 +12,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +41,10 @@ public class TodoServiceImpl implements TodoService {
             };
 
             Todo todo = Todo.builder().content(req.getContent())
-                    .startedAt(LocalDateTime.parse(DateTimeFormatter
-                            .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(req.getStartedAt())))
-                    .endedAt(LocalDateTime.parse(DateTimeFormatter
-                            .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(req.getEndedAt())))
+                    .startedAtDate(LocalDate.parse(req.getStartedAtDate()))
+                    .startedAtTime(LocalTime.parse(req.getStartedAtTime()))
+                    .endedAtDate(LocalDate.parse(req.getEndedAtDate()))
+                    .endedAtTime(LocalTime.parse(req.getEndedAtTime()))
                     .receiveAlert(req.isReceiveAlert()).clearYN(false)
                     .getExperiencePointOrNot(false).markOnTheCalenderOrNot(req.isMarkOnTheCalenderOrNot())
                     .alertAt(req.getAlertAt()).build();

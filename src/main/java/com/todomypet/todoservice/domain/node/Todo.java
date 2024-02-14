@@ -8,7 +8,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Property;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Node("Todo")
 @Builder
@@ -21,10 +23,14 @@ public class Todo {
     private String category;
     @Property("content")
     private String content;
-    @Property("startedAt")
-    private LocalDateTime startedAt;
-    @Property("endedAt")
-    private LocalDateTime endedAt;
+    @Property("startedAtDate")
+    private LocalDate startedAtDate;
+    @Property("startedAtTime")
+    private LocalTime startedAtTime;
+    @Property("endedAtDate")
+    private LocalDate endedAtDate;
+    @Property("endedAtTime")
+    private LocalTime endedAtTime;
     @Property("alertAt")
     private LocalDateTime alertAt;
     @Property("receiveAlert")

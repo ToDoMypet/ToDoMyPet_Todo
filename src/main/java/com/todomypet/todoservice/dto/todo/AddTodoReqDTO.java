@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 public class AddTodoReqDTO {
     private String categoryId;
     private String content;
-    private LocalDateTime startedAt;
-    private LocalDateTime endedAt;
+    private String startedAtDate;
+    private String startedAtTime;
+    private String endedAtDate;
+    private String endedAtTime;
     private boolean receiveAlert;
     private boolean markOnTheCalenderOrNot;
     private LocalDateTime alertAt;
