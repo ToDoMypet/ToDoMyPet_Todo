@@ -20,10 +20,10 @@ public class TodoController {
 
     @Operation(summary = "투두 추가", description = "새로운 투두를 추가합니다.")
     @PostMapping("/todo")
-    public SuccessResDTO<AddTodoResDTO> addTodo(@RequestHeader String userId,
-                                                 @RequestBody AddTodoReqDTO addTodoReqDTO) {
-        AddTodoResDTO response = todoService.addTodo(userId, addTodoReqDTO);
-        return new SuccessResDTO<AddTodoResDTO>(response);
+    public SuccessResDTO<List<AddTodoResDTO>> addTodo(@RequestHeader String userId,
+                                                 @RequestBody List<AddTodoReqDTO> addTodoReqList) {
+        List<AddTodoResDTO> response = todoService.addTodo(userId, addTodoReqList);
+        return new SuccessResDTO<List<AddTodoResDTO>>(response);
     }
 
     @Operation(summary = "투두 달성", description = "투두를 달성합니다.")
@@ -43,7 +43,6 @@ public class TodoController {
         return new SuccessResDTO<List<GetTodoByMonthResDTO>>(response);
     }
 
-    // todo: alertType 논의 필요
     @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다. **현재 가데이터**")
     @GetMapping("/todo/daily/{day}")
     public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {

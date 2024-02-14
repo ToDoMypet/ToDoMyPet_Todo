@@ -30,25 +30,31 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public AddTodoResDTO addTodo(String userId, AddTodoReqDTO addTodoReqDTO) {
-        if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, addTodoReqDTO.getCategoryId()) == null) {
-            throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
-        };
+    public List<AddTodoResDTO> addTodo(String userId, List<AddTodoReqDTO> addTodoReqDTO) {
 
-        Todo todo = Todo.builder().content(addTodoReqDTO.getContent())
-                .startedAt(LocalDateTime.parse(DateTimeFormatter
-                        .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(addTodoReqDTO.getStartedAt())))
-                .endedAt(LocalDateTime.parse(DateTimeFormatter
-                        .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(addTodoReqDTO.getEndedAt())))
-                .receiveAlert(addTodoReqDTO.isReceiveAlert()).clearYN(false)
-                .getExperiencePointOrNot(false).markOnTheCalenderOrNot(addTodoReqDTO.isMarkOnTheCalenderOrNot())
-                .alertAt(addTodoReqDTO.getAlertAt()).build();
+        List<AddTodoResDTO> response = new ArrayList<>();
+        for (AddTodoReqDTO req : addTodoReqDTO) {
+            if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, req.getCategoryId()) == null) {
+                throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
+            };
 
-        String todoId = todoRepository.save(todo).getId();
+            Todo todo = Todo.builder().content(req.getContent())
+                    .startedAt(LocalDateTime.parse(DateTimeFormatter
+                            .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(req.getStartedAt())))
+                    .endedAt(LocalDateTime.parse(DateTimeFormatter
+                            .ofPattern("YYYY-MM-dd'T'HH:mm:ss").format(req.getEndedAt())))
+                    .receiveAlert(req.isReceiveAlert()).clearYN(false)
+                    .getExperiencePointOrNot(false).markOnTheCalenderOrNot(req.isMarkOnTheCalenderOrNot())
+                    .alertAt(req.getAlertAt()).build();
 
-        includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, addTodoReqDTO.getCategoryId());
+            String todoId = todoRepository.save(todo).getId();
 
-        return AddTodoResDTO.builder().todoId(todoId).build();
+            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, req.getCategoryId());
+            response.add(AddTodoResDTO.builder().todoId(todoId).build());
+        }
+
+
+        return response;
     }
 
     @Override
