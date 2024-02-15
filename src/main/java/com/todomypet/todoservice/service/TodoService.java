@@ -14,4 +14,6 @@ public interface TodoService {
     List<GetTodoByDayResDTO> getTodoByDay(String userId, String day);
 
     void unclearTodo(String userId, UnclearTodoReqDTO unclearTodoReqDTO);
+
+    String deleteTodo(String userId, String todoId);
 }

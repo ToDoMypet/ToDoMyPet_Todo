@@ -6,7 +6,9 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @EnableNeo4jRepositories
@@ -24,4 +26,12 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
 
     @Query("MATCH (t:Todo{id:$todoId}) SET t.clearYN = false")
     void updateClearYNToUnclearByTodoId(String todoId);
+
+    @Query("MATCH (t:Todo{id:$todoId}) DETACH DELETE t")
+    void deleteTodoByTodoId(String todoId);
+
+    @Query("MATCH (u:User{id:$userId}) WITH u " +
+            "MATCH (u)-[:HAVE]->(c:Category)-[:INCLUDE]->(t:Todo{id:$todoId}) " +
+            "RETURN t")
+    Optional<Todo> existsByUserIdAndTodoId(String userId, String todoId);
 }

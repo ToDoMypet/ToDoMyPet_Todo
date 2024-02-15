@@ -34,12 +34,20 @@ public class TodoController {
         return new SuccessResDTO<Void>(null);
     }
 
+    @Operation(summary = "투두 달성 취소", description = "투두 달성을 취소합니다. 경험치 획득 내역은 변경되지 않습니다.")
     @PutMapping("/todo/unclear")
     public SuccessResDTO<Void> unclearTodo(@RequestHeader String userId,
                                        @RequestBody UnclearTodoReqDTO unclearTodoReqDTO) {
         todoService.unclearTodo(userId, unclearTodoReqDTO);
         return new SuccessResDTO<Void>(null);
     }
+
+    @DeleteMapping("/todo/{todoId}")
+    public SuccessResDTO<String> deleteTodo(@RequestHeader String userId, @PathVariable String todoId) {
+        String deletedTodoId = todoService.deleteTodo(userId, todoId);
+        return new SuccessResDTO<String>(deletedTodoId);
+    }
+
 
     @Operation(summary = "월별 투두 조회", description = "월별 투두를 조회합니다. {month}는 YYYY-MM 형태로 조회하며, " +
                                                         "해당 월의 전후월 데이터를 함께 조회합니다. **현재 가데이터**")

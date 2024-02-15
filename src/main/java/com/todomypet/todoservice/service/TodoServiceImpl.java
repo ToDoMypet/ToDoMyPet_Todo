@@ -139,4 +139,13 @@ public class TodoServiceImpl implements TodoService {
 
         todoRepository.updateClearYNToUnclearByTodoId(unclearTodoReqDTO.getTodoId());
     }
+
+    @Override
+    @Transactional
+    public String deleteTodo(String userId, String todoId) {
+        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+                -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
+        todoRepository.deleteTodoByTodoId(todoId);
+        return todo.getId();
+    }
 }
