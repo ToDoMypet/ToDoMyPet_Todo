@@ -21,4 +21,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "MATCH (u)-[:HAVE]-(c:Category{id:$categoryId})-[i:INCLUDE]->(t:Todo) " +
             "return t")
     List<Todo> getAllTodoByCategoryId(String userId, String categoryId);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.clearYN = false")
+    void updateClearYNToUnclearByTodoId(String todoId);
 }

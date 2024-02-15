@@ -27,10 +27,17 @@ public class TodoController {
     }
 
     @Operation(summary = "투두 달성", description = "투두를 달성합니다.")
-    @PostMapping("/todo/clear")
+    @PutMapping("/todo/clear")
     public SuccessResDTO<Void> clearTodo(@RequestHeader String userId,
                                          @RequestBody ClearTodoReqDTO clearTodoReqDTO) {
         todoService.clearTodo(userId, clearTodoReqDTO);
+        return new SuccessResDTO<Void>(null);
+    }
+
+    @PutMapping("/todo/unclear")
+    public SuccessResDTO<Void> unclearTodo(@RequestHeader String userId,
+                                       @RequestBody UnclearTodoReqDTO unclearTodoReqDTO) {
+        todoService.unclearTodo(userId, unclearTodoReqDTO);
         return new SuccessResDTO<Void>(null);
     }
 

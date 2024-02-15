@@ -124,4 +124,19 @@ public class TodoServiceImpl implements TodoService {
                 .todoList(data2).build());
         return response;
     }
+
+    @Override
+    public void unclearTodo(String userId, UnclearTodoReqDTO unclearTodoReqDTO) {
+        String categoryId = unclearTodoReqDTO.getCategoryId();
+        String todoId = unclearTodoReqDTO.getTodoId();
+
+        if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, categoryId) == null){
+            throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
+        }
+        if (!includeRepository.existsIncludeRelationshipBetweenCategoryAndTodo(categoryId, todoId)) {
+            throw new CustomException(ErrorCode.NOT_EXISTS_RELATIONSHIP_BETWEEN_CATEGORY_AND_TODO);
+        }
+
+        todoRepository.updateClearYNToUnclearByTodoId(unclearTodoReqDTO.getTodoId());
+    }
 }
