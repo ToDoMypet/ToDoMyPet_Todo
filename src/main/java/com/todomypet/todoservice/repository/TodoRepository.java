@@ -40,7 +40,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "WHERE date(t.startedAtDate).year = $year AND date(t.startedAtDate).month = $month OR " +
             "date(t.endedAtDate).year = $year AND date(t.startedAtDate).month = $month " +
             "OR (date(t.startedAtDate) <= date({year:$year, month:$month}) <= date(t.endedAtDate)) " +
-            "RETURN t")
+            "RETURN DISTINCT t ORDER BY t.id ASC")
     List<Todo> getAllTodoByUserAndMonth(String userId, int year, int month);
 
     @Query("MATCH (t:Todo{id:$repeatCode}) RETURN t")
