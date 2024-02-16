@@ -91,7 +91,7 @@ public class TodoServiceImpl implements TodoService {
     public List<GetTodoByMonthResDTO> getTodoByMonth(String userId, String month) {
         List<GetTodoByMonthResDTO> response = new ArrayList<>();
 
-        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth();
+//        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth();
 
         response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("고뇌의 시간")
                 .todoStartedAt("2024-01-01").todoEndedAt("2024-02-10")
