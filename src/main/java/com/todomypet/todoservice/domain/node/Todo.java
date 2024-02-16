@@ -11,6 +11,7 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 @Node("Todo")
 @Builder
@@ -41,4 +42,8 @@ public class Todo {
     private boolean getExperiencePointOrNot;
     @Property("markOnTheCalenderOrNot")
     private boolean markOnTheCalenderOrNot;
+    @Property("repeatType")
+    private RepeatType repeatType;
+    @Property("repeatData")
+    private List<Integer> repeatData;
 }
