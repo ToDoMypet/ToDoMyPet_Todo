@@ -14,7 +14,6 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 public class Category {
 
     @Id
-    @GeneratedValue(generatorClass = UUIDStringGenerator.class)
     private String id;
     @Property("name")
     private String name;

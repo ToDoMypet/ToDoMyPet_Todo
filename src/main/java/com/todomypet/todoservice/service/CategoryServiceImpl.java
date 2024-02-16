@@ -1,5 +1,6 @@
 package com.todomypet.todoservice.service;
 
+import com.github.f4b6a3.ulid.UlidCreator;
 import com.todomypet.todoservice.domain.node.ColorSet;
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
@@ -30,7 +31,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public AddCategoryResDTO addCategory(String userId, AddCategoryReqDTO addCategoryReqDTO) {
-        Category category = Category.builder().name(addCategoryReqDTO.getName()).build();
+        Category category = Category.builder()
+                .name(addCategoryReqDTO.getName())
+                .id(String.valueOf(UlidCreator.getUlid())).build();
 
         if (haveRepository.existsHaveRelationshipBetweenUserAndCategoryName(userId, addCategoryReqDTO.getName()) != null) {
             return AddCategoryResDTO.builder().duplicatedOrNot(true).categoryId(null).build();
