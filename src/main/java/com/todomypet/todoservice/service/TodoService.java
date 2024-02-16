@@ -5,7 +5,7 @@ import com.todomypet.todoservice.dto.todo.*;
 import java.util.List;
 
 public interface TodoService {
-    List<AddTodoResDTO> addTodo(String userId, List<AddTodoReqDTO> addTodoReqDTO);
+    List<AddTodoResDTO> addTodo(String userId, AddTodoReqDTO todoInfoReqDTO);
 
     void clearTodo(String userId, ClearTodoReqDTO clearTodoReqDTO);
 

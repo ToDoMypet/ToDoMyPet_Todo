@@ -21,7 +21,7 @@ public class TodoController {
     @Operation(summary = "투두 추가", description = "새로운 투두를 추가합니다.")
     @PostMapping("/todo")
     public SuccessResDTO<List<AddTodoResDTO>> addTodo(@RequestHeader String userId,
-                                                 @RequestBody List<AddTodoReqDTO> addTodoReqList) {
+                                                 @RequestBody AddTodoReqDTO addTodoReqList) {
         List<AddTodoResDTO> response = todoService.addTodo(userId, addTodoReqList);
         return new SuccessResDTO<List<AddTodoResDTO>>(response);
     }

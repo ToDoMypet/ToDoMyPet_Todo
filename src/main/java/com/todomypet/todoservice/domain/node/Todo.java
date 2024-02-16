@@ -46,4 +46,6 @@ public class Todo {
     private RepeatType repeatType;
     @Property("repeatData")
     private List<Integer> repeatData;
+    @Property("repeatCode")
+    private String repeatCode;
 }

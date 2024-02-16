@@ -45,6 +45,9 @@ dependencies {
 
     // Open Feign
     implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // ULID
+    implementation 'com.github.f4b6a3:ulid-creator:5.1.0'
 }
 
 dependencyManagement {

@@ -7,6 +7,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,4 +42,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "OR (date(t.startedAtDate) <= date({year:$year, month:$month}) <= date(t.endedAtDate)) " +
             "RETURN t")
     List<Todo> getAllTodoByUserAndMonth(String userId, int year, int month);
+
+    @Query("MATCH (t:Todo{id:$repeatCode}) RETURN t")
+    List<Todo> getTodoByRepeatCode(String repeatCode);
 }

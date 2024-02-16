@@ -1,6 +1,7 @@
 package com.todomypet.todoservice.service;
 
-import com.todomypet.todoservice.domain.node.Category;
+import com.github.f4b6a3.ulid.UlidCreator;
+import com.todomypet.todoservice.domain.node.RepeatType;
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.domain.relationship.Have;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
@@ -15,11 +16,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -34,22 +35,46 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public List<AddTodoResDTO> addTodo(String userId, List<AddTodoReqDTO> addTodoReqDTO) {
+    public List<AddTodoResDTO> addTodo(String userId, AddTodoReqDTO todoInfoReqDTO) {
 
         List<AddTodoResDTO> response = new ArrayList<>();
-        for (AddTodoReqDTO req : addTodoReqDTO) {
+        RepeatType repeatType = todoInfoReqDTO.getRepeatInfo().getRepeatType();
+        List<Integer> repeatData = todoInfoReqDTO.getRepeatInfo().getRepeatData();
+
+        StringBuilder repeatCode = new StringBuilder();
+        Random rnd = new Random();
+
+        while (true) {
+            for (int i = 0; i < 2; i++) {
+                repeatCode.append((char) (rnd.nextInt(26) + 65));
+            }
+            for (int i = 0; i < 9; i++) {
+                repeatCode.append(rnd.nextInt(10));
+            }
+
+            if (todoRepository.getTodoByRepeatCode(repeatCode.toString()).isEmpty()) {
+                break;
+            }
+        }
+
+        for (TodoInfoReqDTO req : todoInfoReqDTO.getTodoInfos()) {
             if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, req.getCategoryId()) == null) {
                 throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
             };
 
-            Todo todo = Todo.builder().content(req.getContent())
+            Todo todo = Todo.builder().id(UlidCreator.getUlid().toString())
+                    .content(req.getContent())
                     .startedAtDate(LocalDate.parse(req.getStartedAtDate()))
                     .startedAtTime(LocalTime.parse(req.getStartedAtTime()))
                     .endedAtDate(LocalDate.parse(req.getEndedAtDate()))
                     .endedAtTime(LocalTime.parse(req.getEndedAtTime()))
                     .receiveAlert(req.isReceiveAlert()).clearYN(false)
                     .getExperiencePointOrNot(false).markOnTheCalenderOrNot(req.isMarkOnTheCalenderOrNot())
-                    .alertAt(req.getAlertAt()).build();
+                    .alertAt(req.getAlertAt())
+                    .repeatType(repeatType)
+                    .repeatData(repeatData)
+                    .repeatCode(repeatCode.toString())
+                    .build();
 
             String todoId = todoRepository.save(todo).getId();
 
