@@ -34,4 +34,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "MATCH (u)-[:HAVE]->(c:Category)-[:INCLUDE]->(t:Todo{id:$todoId}) " +
             "RETURN t")
     Optional<Todo> existsByUserIdAndTodoId(String userId, String todoId);
+
+    @Query("MATCH (t:Todo) WHERE t.staredAtDate = date({year: ")
+    List<Todo> getAllTodoByUserAndMonth(int year, int month);
 }

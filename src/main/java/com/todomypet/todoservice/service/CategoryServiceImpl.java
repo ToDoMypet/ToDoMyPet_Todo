@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = Category.builder().name(addCategoryReqDTO.getName()).build();
 
         if (haveRepository.existsHaveRelationshipBetweenUserAndCategoryName(userId, addCategoryReqDTO.getName()) != null) {
-            throw new CustomException(ErrorCode.CATEGORY_NAME_DUPLICATED);
+            return AddCategoryResDTO.builder().duplicatedOrNot(true).categoryId(null).build();
         }
 
         String savedCategoryId = categoryRepository.save(category).getId();
@@ -43,7 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
         haveRepository.createHaveRelationshipBetweenUserAndCategory(userId, savedCategoryId,
                 colorSet.getColorCode(), colorSet.getBgCode(), colorSet.getTextCode());
 
-        return AddCategoryResDTO.builder().categoryId(savedCategoryId).build();
+        return AddCategoryResDTO.builder().categoryId(savedCategoryId).duplicatedOrNot(false).build();
     }
 
     @Override
