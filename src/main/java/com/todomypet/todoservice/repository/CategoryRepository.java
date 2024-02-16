@@ -19,6 +19,6 @@ public interface CategoryRepository extends Neo4jRepository<Category, String> {
     @Query("MATCH (c:Category{id:$categoryId}) DETACH DELETE c")
     void deleteCategoryById(String categoryId);
 
-    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(c:Category) RETURN c")
+    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(c:Category) RETURN c ORDER BY c.id DESC")
     List<Category> getCategoryListByUserId(String userId);
 }
