@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -54,10 +55,16 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(String userId, String categoryId) {
         List<Todo> todoList = todoRepository.getAllTodoByCategoryId(userId, categoryId);
         String defaultCategoryId = categoryRepository.getDefaultCategoryIdByUserId(userId).getId();
+
+        if (defaultCategoryId.equals(categoryId)) {
+            throw new CustomException(ErrorCode.DEFAULT_CATEGORY_CANT_DELETED);
+        }
+
         for (Todo todo : todoList) {
             includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todo.getId(), defaultCategoryId);
-            categoryRepository.deleteCategoryById(categoryId);
         }
+
+        categoryRepository.deleteCategoryById(categoryId);
     }
 
     @Override
