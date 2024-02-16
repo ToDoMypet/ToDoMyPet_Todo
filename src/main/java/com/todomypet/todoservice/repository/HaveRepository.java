@@ -21,4 +21,8 @@ public interface HaveRepository extends Neo4jRepository<Have, Long> {
     @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[h:HAVE]->(c:Category{name:$categoryName}) " +
             "RETURN h")
     Have existsHaveRelationshipBetweenUserAndCategoryName(String userId, String categoryName);
+
+    @Query("MATCH (:User)-[h:HAVE]->(:Category)-[:INCLUDE]->(:Todo{id:$todoId}) " +
+            "RETURN h{.bgCode, .textCode}")
+    Have getHaveByTodoId(String todoId);
 }

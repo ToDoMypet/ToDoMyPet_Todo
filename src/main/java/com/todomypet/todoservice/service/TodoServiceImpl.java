@@ -1,6 +1,8 @@
 package com.todomypet.todoservice.service;
 
+import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.domain.node.Todo;
+import com.todomypet.todoservice.domain.relationship.Have;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
@@ -90,25 +92,19 @@ public class TodoServiceImpl implements TodoService {
     @Transactional
     public List<GetTodoByMonthResDTO> getTodoByMonth(String userId, String month) {
         List<GetTodoByMonthResDTO> response = new ArrayList<>();
+        LocalDate searchTarget = LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
-//        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth();
+        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth(userId, searchTarget.getYear(),
+                searchTarget.getMonthValue());
 
-        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("고뇌의 시간")
-                .todoStartedAt("2024-01-01").todoEndedAt("2024-02-10")
-                .categoryTextColorCode("#00C41F")
-                .categoryBgColorCode("#CDFFD5").build());
-        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("캡스톤 프로젝트")
-                .todoStartedAt("2024-02-01").todoEndedAt("2024-02-05")
-                .categoryTextColorCode("#D8A900")
-                .categoryBgColorCode("#FFF1A6").build());
-        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("투두마이펫 회의")
-                .todoStartedAt("2024-02-02").todoEndedAt(null)
-                .categoryTextColorCode("#00C41F")
-                .categoryBgColorCode("#CDFFD5").build());
-        response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent("누군가의 생일")
-                .todoStartedAt("2024-02-27").todoEndedAt(null)
-                .categoryTextColorCode("#00C41F")
-                .categoryBgColorCode("#CDFFD5").build());
+        for (Todo todo : todos) {
+            Have have = haveRepository.getHaveByTodoId(todo.getId());
+            response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
+                    .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(todo.getEndedAtDate().toString())
+                    .categoryTextColorCode(have.getBgCode())
+                    .categoryBgColorCode(have.getTextCode()).build());
+        }
+
         return response;
     }
 
