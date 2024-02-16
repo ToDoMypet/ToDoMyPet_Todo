@@ -4,8 +4,8 @@ spring:
   application:
     name: todo-service
   config:
-#    import: http://3.39.47.157:8888/
-    import: http://127.0.0.1:8888/
+    import: http://3.39.47.157:8888/
+#    import: http://127.0.0.1:8888/
     name: todo-service
     activate:
       on-profile: default
