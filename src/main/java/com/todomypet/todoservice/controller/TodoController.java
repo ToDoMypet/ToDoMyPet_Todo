@@ -42,6 +42,7 @@ public class TodoController {
         return new SuccessResDTO<Void>(null);
     }
 
+    @Operation(summary = "투두 삭제", description = "투두를 삭제합니다. 반복 옵션의 경우 기존 모든 투두가 삭제됩니다.")
     @DeleteMapping("/todo/{todoId}")
     public SuccessResDTO<String> deleteTodo(@RequestHeader String userId, @PathVariable String todoId) {
         String deletedTodoId = todoService.deleteTodo(userId, todoId);

@@ -169,7 +169,14 @@ public class TodoServiceImpl implements TodoService {
     public String deleteTodo(String userId, String todoId) {
         Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
-        todoRepository.deleteTodoByTodoId(todoId);
+
+        if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
+            todoRepository.deleteOneById(todoId);
+        } else {
+            String repeatCode = todo.getRepeatCode();
+            todoRepository.deleteAllByRepeatCode(repeatCode);
+        }
+
         return todo.getId();
     }
 }
