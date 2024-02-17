@@ -1,5 +1,6 @@
 package com.todomypet.todoservice.dto.todo;
 
+import com.todomypet.todoservice.domain.node.AlertType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,4 +22,5 @@ public class TodoInfoReqDTO {
     private boolean receiveAlert;
     private boolean markOnTheCalenderOrNot;
     private LocalDateTime alertAt;
+    private AlertType alertType;
 }

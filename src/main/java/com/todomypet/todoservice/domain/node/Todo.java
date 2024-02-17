@@ -36,6 +36,8 @@ public class Todo {
     private LocalDateTime alertAt;
     @Property("receiveAlert")
     private boolean receiveAlert;
+    @Property("alertType")
+    private AlertType alertType;
     @Property("clearYN")
     private boolean clearYN;
     @Property("getExperiencePointOrNot")

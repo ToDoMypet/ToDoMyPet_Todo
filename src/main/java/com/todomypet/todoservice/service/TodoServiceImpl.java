@@ -71,6 +71,7 @@ public class TodoServiceImpl implements TodoService {
                     .receiveAlert(req.isReceiveAlert()).clearYN(false)
                     .getExperiencePointOrNot(false).markOnTheCalenderOrNot(req.isMarkOnTheCalenderOrNot())
                     .alertAt(req.getAlertAt())
+                    .alertType(req.getAlertType())
                     .repeatType(repeatType)
                     .repeatData(repeatData)
                     .repeatCode(repeatCode.toString())
