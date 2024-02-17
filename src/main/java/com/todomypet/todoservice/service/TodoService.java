@@ -16,4 +16,6 @@ public interface TodoService {
     void unclearTodo(String userId, UnclearTodoReqDTO unclearTodoReqDTO);
 
     String deleteTodo(String userId, String todoId);
+
+    TodoDetailResDTO getTodoDetail(String userId, String todoId);
 }

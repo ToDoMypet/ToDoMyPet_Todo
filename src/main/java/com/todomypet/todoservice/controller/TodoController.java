@@ -26,6 +26,12 @@ public class TodoController {
         return new SuccessResDTO<List<AddTodoResDTO>>(response);
     }
 
+    @GetMapping("/todo/{todoId}")
+    public SuccessResDTO<TodoDetailResDTO> getTodoDetail(@RequestHeader String userId, @PathVariable String todoId) {
+        TodoDetailResDTO response = todoService.getTodoDetail(userId, todoId);
+        return new SuccessResDTO<TodoDetailResDTO>(response);
+    }
+
     @Operation(summary = "투두 달성", description = "투두를 달성합니다.")
     @PutMapping("/todo/clear")
     public SuccessResDTO<Void> clearTodo(@RequestHeader String userId,

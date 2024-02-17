@@ -20,8 +20,6 @@ public class Todo {
     @Id
     @GeneratedValue(generatorClass = UUIDStringGenerator.class)
     private String id;
-    @Property("category")
-    private String category;
     @Property("content")
     private String content;
     @Property("startedAtDate")

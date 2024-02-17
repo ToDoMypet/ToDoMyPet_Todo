@@ -1,13 +1,16 @@
 package com.todomypet.todoservice.service;
 
 import com.github.f4b6a3.ulid.UlidCreator;
+import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.domain.node.RepeatType;
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.domain.relationship.Have;
+import com.todomypet.todoservice.domain.relationship.Include;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
 import com.todomypet.todoservice.exception.ErrorCode;
+import com.todomypet.todoservice.repository.CategoryRepository;
 import com.todomypet.todoservice.repository.HaveRepository;
 import com.todomypet.todoservice.repository.IncludeRepository;
 import com.todomypet.todoservice.repository.TodoRepository;
@@ -31,6 +34,7 @@ public class TodoServiceImpl implements TodoService {
     private final TodoRepository todoRepository;
     private final IncludeRepository includeRepository;
     private final PetServiceClient petServiceClient;
+    private final CategoryRepository categoryRepository;
 
 
     @Override
@@ -179,5 +183,19 @@ public class TodoServiceImpl implements TodoService {
         }
 
         return todo.getId();
+    }
+
+    @Override
+    @Transactional
+    public TodoDetailResDTO getTodoDetail(String userId, String todoId) {
+        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+                -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
+        Category category = categoryRepository.getCategoryByTodoId(todoId).orElseThrow(()
+                -> new CustomException(ErrorCode.NOT_EXSIST_CATEGORY));
+        Have have = haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, category.getId());
+        return TodoDetailResDTO.builder().todoId(todo.getId()).content(todo.getContent())
+                .categoryName(category.getName()).categoryColorCode(have.getColorCode())
+                .startedAtDate(todo.getStartedAtDate()).startedAtTime(todo.getStartedAtTime())
+                .endedAtDate(todo.getEndedAtDate()).endedAtTime(todo.getEndedAtTime()).build();
     }
 }

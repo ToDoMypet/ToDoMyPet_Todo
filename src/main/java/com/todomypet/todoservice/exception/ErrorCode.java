@@ -13,7 +13,8 @@ public enum ErrorCode {
     FEIGN_CLIENT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "T004", "서버간 통신 중 에러가 발생했습니다."),
     WRONG_USER_AND_TODO(HttpStatus.FORBIDDEN, "T005", "사용자에게 해당 투두를 삭제할 권한이 없습니다."),
     DEFAULT_CATEGORY_CANT_DELETED(HttpStatus.BAD_REQUEST, "T006", "미분류 카테고리는 삭제할 수 없습니다."),
-    NOT_EXISTS_TODO_ID(HttpStatus.BAD_REQUEST, "T007", "해당 id를 가진 todo가 존재하지 않습니다.")
+    NOT_EXISTS_TODO_ID(HttpStatus.BAD_REQUEST, "T007", "해당 id를 가진 todo가 존재하지 않습니다."),
+    NOT_EXSIST_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, "T008", "카테고리가 존재하지 않습니다.")
     ;
 
     private final HttpStatus httpStatus;
