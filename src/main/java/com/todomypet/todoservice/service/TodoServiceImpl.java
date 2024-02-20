@@ -191,11 +191,14 @@ public class TodoServiceImpl implements TodoService {
         Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
         Category category = categoryRepository.getCategoryByTodoId(todoId).orElseThrow(()
-                -> new CustomException(ErrorCode.NOT_EXSIST_CATEGORY));
+                -> new CustomException(ErrorCode.NOT_EXISTS_CATEGORY));
         Have have = haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, category.getId());
         return TodoDetailResDTO.builder().todoId(todo.getId()).content(todo.getContent())
                 .categoryName(category.getName()).categoryColorCode(have.getColorCode())
                 .startedAtDate(todo.getStartedAtDate()).startedAtTime(todo.getStartedAtTime())
+                .markOnTheCalenderOrNot(todo.isMarkOnTheCalenderOrNot())
+                .alertAt(todo.getAlertAt()).alertType(todo.getAlertType())
+                .repeatType(todo.getRepeatType()).repeatData(todo.getRepeatData())
                 .endedAtDate(todo.getEndedAtDate()).endedAtTime(todo.getEndedAtTime()).build();
     }
 }
