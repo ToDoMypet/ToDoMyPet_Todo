@@ -26,6 +26,7 @@ public class TodoController {
         return new SuccessResDTO<List<AddTodoResDTO>>(response);
     }
 
+    @Operation(summary = "투두 상세 보기", description = "할일의 상세 정보를 확인합니다.")
     @GetMapping("/todo/{todoId}")
     public SuccessResDTO<TodoDetailResDTO> getTodoDetail(@RequestHeader String userId, @PathVariable String todoId) {
         TodoDetailResDTO response = todoService.getTodoDetail(userId, todoId);
