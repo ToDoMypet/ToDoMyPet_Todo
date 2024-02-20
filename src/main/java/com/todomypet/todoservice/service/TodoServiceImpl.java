@@ -201,4 +201,39 @@ public class TodoServiceImpl implements TodoService {
                 .repeatType(todo.getRepeatType()).repeatData(todo.getRepeatData())
                 .endedAtDate(todo.getEndedAtDate()).endedAtTime(todo.getEndedAtTime()).build();
     }
+
+    @Override
+    @Transactional
+    public String updateTodo(String userId, String todoId, UpdateTodoReqDTO updateInfos) {
+//        Todo todo = todoRepository.getOneTodoByTodoId(todoId)
+//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_TODO_ID));
+//
+//        // 카테고리 수정되는 경우 고려해야 함
+//
+//        if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
+//            if (includeRepository.existsIncludeRelationshipBetweenCategoryAndTodo(categoryId, todoId))
+//            todoRepository.updateTodoByTodoId();
+//            return null;
+//        }
+//
+//        if (updateInfos.isUpdatePastRepeatDataOrNot()) {
+//            // 이전 데이터 함께 업데이트
+//        } else {
+//            // 이후 데이터만 업데이트
+//        }
+
+        return null;
+    }
+
+    @Override
+    @Transactional
+    public String endTheRepeatTodo(String userId, String todoId) {
+        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+                -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
+
+        String repeatCode = todo.getRepeatCode();
+        todoRepository.endTheRepeatTodoByRepeatCode(repeatCode);
+
+        return todoId;
+    }
 }

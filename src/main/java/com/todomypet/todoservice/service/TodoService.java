@@ -18,4 +18,8 @@ public interface TodoService {
     String deleteTodo(String userId, String todoId);
 
     TodoDetailResDTO getTodoDetail(String userId, String todoId);
+
+    String updateTodo(String userId, String todoId, UpdateTodoReqDTO updateInfos);
+
+    String endTheRepeatTodo(String userId, String todoId);
 }

@@ -6,6 +6,7 @@ import com.todomypet.todoservice.service.TodoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,14 @@ public class TodoController {
         return new SuccessResDTO<TodoDetailResDTO>(response);
     }
 
+    @Operation(summary = "투두 수정", description = "투두 데이터를 업데이트합니다.")
+    @PutMapping("/todo/{todoId}")
+    public SuccessResDTO<String> updateTodo(@RequestHeader String userId, @PathVariable String todoId,
+                                            @RequestBody UpdateTodoReqDTO updateInfos) {
+        String response = todoService.updateTodo(userId, todoId, updateInfos);
+        return new SuccessResDTO<String>(response);
+    }
+
     @Operation(summary = "투두 달성", description = "투두를 달성합니다.")
     @PutMapping("/todo/clear")
     public SuccessResDTO<Void> clearTodo(@RequestHeader String userId,
@@ -53,6 +62,12 @@ public class TodoController {
     @DeleteMapping("/todo/{todoId}")
     public SuccessResDTO<String> deleteTodo(@RequestHeader String userId, @PathVariable String todoId) {
         String deletedTodoId = todoService.deleteTodo(userId, todoId);
+        return new SuccessResDTO<String>(deletedTodoId);
+    }
+
+    @DeleteMapping("/todo/{todoId}/end-the-repeat")
+    public SuccessResDTO<String> endTheRepeatTodo(@RequestHeader String userId, @PathVariable String todoId) {
+        String deletedTodoId = todoService.endTheRepeatTodo(userId, todoId);
         return new SuccessResDTO<String>(deletedTodoId);
     }
 

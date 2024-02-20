@@ -54,4 +54,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) DETACH DELETE t")
     void deleteAllByRepeatCode(String repeatCode);
+
+    @Query("MATCH (t:Todo{repeatCode:$repeatCode}) DETACH DELETE t")
+    void endTheRepeatTodoByRepeatCode(String repeatCode);
 }
