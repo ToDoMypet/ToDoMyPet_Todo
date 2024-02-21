@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum AlertType {
+    NONE_ALERT("알림 없음"),
     EVENT_TIME("이벤트 시간"),
     FIVE_MINUTE("5분 전"),
     TEN_MINUTE("10분 전"),
