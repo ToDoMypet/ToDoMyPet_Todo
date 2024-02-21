@@ -48,4 +48,8 @@ public class Todo {
     private List<Integer> repeatData;
     @Property("repeatCode")
     private String repeatCode;
+    @Property("repeatStartDate")
+    private LocalDate repeatStartDate;
+    @Property("repeatEndDate")
+    private LocalDate repeatEndDate;
 }
