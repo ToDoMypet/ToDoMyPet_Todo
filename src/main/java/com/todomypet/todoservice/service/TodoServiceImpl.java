@@ -152,10 +152,17 @@ public class TodoServiceImpl implements TodoService {
 
         for (Todo todo : todos) {
             Have have = haveRepository.getHaveByTodoId(todo.getId());
-            response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
-                    .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(todo.getEndedAtDate().toString())
-                    .categoryTextColorCode(have.getBgCode())
-                    .categoryBgColorCode(have.getTextCode()).build());
+            if (todo.getEndedAtDate() == null) {
+                response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
+                        .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(null)
+                        .categoryTextColorCode(have.getBgCode())
+                        .categoryBgColorCode(have.getTextCode()).build());
+            } else {
+                response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
+                        .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(todo.getEndedAtDate().toString())
+                        .categoryTextColorCode(have.getBgCode())
+                        .categoryBgColorCode(have.getTextCode()).build());
+            }
         }
 
         return response;
