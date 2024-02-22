@@ -44,7 +44,6 @@ public class TodoServiceImpl implements TodoService {
         List<AddTodoResDTO> response = new ArrayList<>();
         RepeatType repeatType = todoInfoReqDTO.getRepeatInfo().getRepeatType();
         List<Integer> repeatData = todoInfoReqDTO.getRepeatInfo().getRepeatData();
-
         StringBuilder repeatCode = new StringBuilder();
         Random rnd = new Random();
 
@@ -141,12 +140,12 @@ public class TodoServiceImpl implements TodoService {
         for (Todo todo : todos) {
             Have have = haveRepository.getHaveByTodoId(todo.getId());
             if (todo.getEndedAtDate() == null) {
-                response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
+                response.add(GetTodoByMonthResDTO.builder().id(todo.getId()).todoContent(todo.getContent())
                         .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(null)
                         .categoryTextColorCode(have.getBgCode())
                         .categoryBgColorCode(have.getTextCode()).build());
             } else {
-                response.add(GetTodoByMonthResDTO.builder().id(UUID.randomUUID().toString()).todoContent(todo.getContent())
+                response.add(GetTodoByMonthResDTO.builder().id(todo.getId()).todoContent(todo.getContent())
                         .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(todo.getEndedAtDate().toString())
                         .categoryTextColorCode(have.getBgCode())
                         .categoryBgColorCode(have.getTextCode()).build());
