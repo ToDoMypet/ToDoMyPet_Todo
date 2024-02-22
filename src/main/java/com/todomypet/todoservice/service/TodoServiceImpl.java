@@ -79,9 +79,11 @@ public class TodoServiceImpl implements TodoService {
             if (req.getStartedAtTime() != null) {
                 todoBuilder.startedAtTime(LocalTime.parse(req.getStartedAtTime()));
             }
+            if (req.getEndedAtDate() != null) {
+                todoBuilder.endedAtDate(LocalDate.parse(req.getEndedAtDate()));
+            }
             if (req.getEndedAtTime() != null) {
-                todoBuilder.endedAtDate(LocalDate.parse(req.getEndedAtDate()))
-                        .endedAtTime(LocalTime.parse(req.getEndedAtTime()));
+                todoBuilder.endedAtTime(LocalTime.parse(req.getEndedAtTime()));
             }
             if (todoInfoReqDTO.getRepeatInfo().getRepeatEndDate() != null) {
                 todoBuilder.repeatStartDate(todoInfoReqDTO.getRepeatInfo().getRepeatEndDate());
