@@ -33,6 +33,7 @@ public class CategoryController {
         return new SuccessResDTO<AddCategoryResDTO>(response);
     }
 
+    @Operation(summary = "카테고리 수정", description = "카테고리를 수정합니다. default 카테고리는 수정할 수 없습니다.")
     @PutMapping("/category/{categoryId}")
     public SuccessResDTO<UpdateCategoryResDTO> updateCategory(@RequestHeader String userId, @PathVariable String categoryId,
                                                               @RequestBody UpdateCategoryReqDTO updateCategoryInfo) {
