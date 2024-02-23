@@ -87,6 +87,12 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(updateCategoryInfo.getName())
                 .id(String.valueOf(UlidCreator.getUlid())).build();
 
+        String defaultCategoryId = categoryRepository.getDefaultCategoryIdByUserId(userId).getId();
+
+        if (defaultCategoryId.equals(categoryId)) {
+            throw new CustomException(ErrorCode.DEFAULT_CATEGORY_CANT_UPDATED);
+        }
+
         if (haveRepository.existsHaveRelationshipBetweenUserAndCategoryName(userId, updateCategoryInfo.getName()) != null) {
             return UpdateCategoryResDTO.builder().duplicatedOrNot(true).categoryId(null).build();
         }

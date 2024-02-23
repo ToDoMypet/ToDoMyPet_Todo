@@ -14,8 +14,8 @@ public enum ErrorCode {
     WRONG_USER_AND_TODO(HttpStatus.FORBIDDEN, "T005", "사용자에게 해당 투두를 접근할 권한이 없습니다."),
     DEFAULT_CATEGORY_CANT_DELETED(HttpStatus.BAD_REQUEST, "T006", "미분류 카테고리는 삭제할 수 없습니다."),
     NOT_EXISTS_TODO_ID(HttpStatus.BAD_REQUEST, "T007", "해당 id를 가진 todo가 존재하지 않습니다."),
-    NOT_EXISTS_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, "T008", "카테고리가 존재하지 않습니다.")
-    ;
+    NOT_EXISTS_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, "T008", "카테고리가 존재하지 않습니다."),
+    DEFAULT_CATEGORY_CANT_UPDATED(HttpStatus.BAD_REQUEST, "T009", "미분류 카테고리는 수정할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
