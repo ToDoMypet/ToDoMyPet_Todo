@@ -8,6 +8,7 @@ import java.util.List;
 @Getter
 @Builder
 public class GetTodoByDayResDTO {
+    private String categoryId;
     private String categoryName;
     private String categoryColorCode;
     private List<TodoInGetTodoByDayDTO> todoList;

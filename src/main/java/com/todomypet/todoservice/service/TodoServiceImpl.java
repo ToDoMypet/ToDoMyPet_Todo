@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -157,18 +158,37 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
+    @Transactional
     public List<GetTodoByDayResDTO> getTodoByDay(String userId, String day) {
         List<GetTodoByDayResDTO> response = new ArrayList<>();
-        List<TodoInGetTodoByDayDTO> data1 = new ArrayList<>();
-        data1.add(TodoInGetTodoByDayDTO.builder().content("투두마이펫 UI 디자인 작업").clearYN(false).alertAt(null).alertType(null).build());
-        data1.add(TodoInGetTodoByDayDTO.builder().content("업무일지 작성하기").clearYN(true).alertAt("11:00:00").alertType(null).build());
-        List<TodoInGetTodoByDayDTO> data2 = new ArrayList<>();
-        response.add(GetTodoByDayResDTO.builder().categoryName("프로젝트").categoryColorCode("#FFC558")
-                .todoList(data1).build());
-        data2.add(TodoInGetTodoByDayDTO.builder().content("콘서트 티켓팅").clearYN(false).alertAt("11:00:00").alertType(null).build());
-        data2.add(TodoInGetTodoByDayDTO.builder().content("홍대에서 동기 모임").clearYN(false).alertAt("15:00:00").alertType(null).build());
-        response.add(GetTodoByDayResDTO.builder().categoryName("약속").categoryColorCode("#FF0DBB")
-                .todoList(data2).build());
+
+        LocalDate date = LocalDate.parse(day, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        List<Category> categories = categoryRepository.getCategoryListByUserId(userId);
+
+        categories.forEach(category -> {
+            List<TodoInGetTodoByDayDTO> todos = new ArrayList<>();
+            List<Todo> todosForCategory = todoRepository.getAllTodoByCategoryIdAndDay(userId, category.getId(),
+                    date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+            Have have = haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, category.getId());
+
+            todosForCategory.forEach(todo -> {
+                todos.add(TodoInGetTodoByDayDTO.builder()
+                        .todoId(todo.getId())
+                        .content(todo.getContent())
+                        .clearYN(todo.isClearYN())
+                        .alertAt(String.valueOf(todo.getAlertAt()))
+                        .alertType(todo.getAlertType())
+                        .build());
+            });
+
+            response.add(GetTodoByDayResDTO.builder()
+                    .categoryId(category.getId())
+                    .categoryName(category.getName())
+                    .categoryColorCode(have != null ? have.getColorCode() : null)
+                    .todoList(todos)
+                    .build());
+        });
+
         return response;
     }
 

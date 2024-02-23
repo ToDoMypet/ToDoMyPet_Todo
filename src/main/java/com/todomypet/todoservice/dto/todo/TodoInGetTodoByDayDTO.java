@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class TodoInGetTodoByDayDTO {
+    private String todoId;
     private String content;
     private boolean clearYN;
     private boolean receiveAlert;

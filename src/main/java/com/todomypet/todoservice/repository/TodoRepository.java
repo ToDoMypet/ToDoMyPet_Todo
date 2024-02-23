@@ -57,4 +57,11 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) DETACH DELETE t")
     void endTheRepeatTodoByRepeatCode(String repeatCode);
+
+    @Query("MATCH (u:User{id:$userId}) WITH u " +
+            "MATCH (u)-[:HAVE]-(c:Category{id:$categoryId})-[i:INCLUDE]->(t:Todo) " +
+            "WHERE t.startedAtDate = date({year:$year, month:$month, day:$day}) OR " +
+            "(t.startedAtDate <= date({year:$year, month:$month, day:$day}) AND t.endedAtDate >= date({year:$year, month:$month, day:$day})) " +
+            "return t")
+    List<Todo> getAllTodoByCategoryIdAndDay(String userId, String categoryId, int year, int month, int day);
 }

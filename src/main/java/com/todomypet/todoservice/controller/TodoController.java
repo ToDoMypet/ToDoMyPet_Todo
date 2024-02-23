@@ -65,6 +65,7 @@ public class TodoController {
         return new SuccessResDTO<String>(deletedTodoId);
     }
 
+    @Operation(summary = "투두 반복 종료", description = "반복 설정된 투두를 종료합니다. 종료일 기준 이후 모든 반복 일정이 삭제됩니다.")
     @DeleteMapping("/todo/{todoId}/end-the-repeat")
     public SuccessResDTO<String> endTheRepeatTodo(@RequestHeader String userId, @PathVariable String todoId) {
         String deletedTodoId = todoService.endTheRepeatTodo(userId, todoId);
