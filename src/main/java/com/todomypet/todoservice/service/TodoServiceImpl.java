@@ -180,15 +180,15 @@ public class TodoServiceImpl implements TodoService {
                             .alertAt(String.valueOf(todo.getAlertAt()))
                             .alertType(todo.getAlertType())
                             .build());
-
-                    response.add(GetTodoByDayResDTO.builder()
-                            .categoryId(category.getId())
-                            .categoryName(category.getName())
-                            .categoryColorCode(have != null ? have.getColorCode() : null)
-                            .todoList(todos)
-                            .build());
                 });
             }
+
+            response.add(GetTodoByDayResDTO.builder()
+                    .categoryId(category.getId())
+                    .categoryName(category.getName())
+                    .categoryColorCode(have != null ? have.getColorCode() : null)
+                    .todoList(todos)
+                    .build());
         });
 
         return response;
