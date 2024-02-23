@@ -171,22 +171,24 @@ public class TodoServiceImpl implements TodoService {
                     date.getYear(), date.getMonthValue(), date.getDayOfMonth());
             Have have = haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, category.getId());
 
-            todosForCategory.forEach(todo -> {
-                todos.add(TodoInGetTodoByDayDTO.builder()
-                        .todoId(todo.getId())
-                        .content(todo.getContent())
-                        .clearYN(todo.isClearYN())
-                        .alertAt(String.valueOf(todo.getAlertAt()))
-                        .alertType(todo.getAlertType())
-                        .build());
-            });
+            if (!todosForCategory.isEmpty()) {
+                todosForCategory.forEach(todo -> {
+                    todos.add(TodoInGetTodoByDayDTO.builder()
+                            .todoId(todo.getId())
+                            .content(todo.getContent())
+                            .clearYN(todo.isClearYN())
+                            .alertAt(String.valueOf(todo.getAlertAt()))
+                            .alertType(todo.getAlertType())
+                            .build());
 
-            response.add(GetTodoByDayResDTO.builder()
-                    .categoryId(category.getId())
-                    .categoryName(category.getName())
-                    .categoryColorCode(have != null ? have.getColorCode() : null)
-                    .todoList(todos)
-                    .build());
+                    response.add(GetTodoByDayResDTO.builder()
+                            .categoryId(category.getId())
+                            .categoryName(category.getName())
+                            .categoryColorCode(have != null ? have.getColorCode() : null)
+                            .todoList(todos)
+                            .build());
+                });
+            }
         });
 
         return response;
