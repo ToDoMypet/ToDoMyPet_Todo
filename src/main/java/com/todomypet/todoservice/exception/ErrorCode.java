@@ -16,7 +16,8 @@ public enum ErrorCode {
     NOT_EXISTS_TODO_ID(HttpStatus.BAD_REQUEST, "T007", "해당 id를 가진 todo가 존재하지 않습니다."),
     NOT_EXISTS_CATEGORY(HttpStatus.INTERNAL_SERVER_ERROR, "T008", "카테고리가 존재하지 않습니다."),
     DEFAULT_CATEGORY_CANT_UPDATED(HttpStatus.BAD_REQUEST, "T009", "미분류 카테고리는 수정할 수 없습니다."),
-    ALREADY_CLEAR_TODO(HttpStatus.BAD_REQUEST, "T010", "이미 달성한 todo입니다.");
+    ALREADY_CLEAR_TODO(HttpStatus.BAD_REQUEST, "T010", "이미 달성한 todo입니다."),
+    NOT_CLEARED_TODO(HttpStatus.BAD_REQUEST, "T011", "달성되지 않은 todo입니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
