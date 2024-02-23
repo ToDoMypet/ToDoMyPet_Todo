@@ -109,6 +109,12 @@ public class TodoServiceImpl implements TodoService {
     public void clearTodo(String userId, ClearTodoReqDTO clearTodoReqDTO) {
         String categoryId = clearTodoReqDTO.getCategoryId();
         String todoId = clearTodoReqDTO.getTodoId();
+        Todo todo = todoRepository.getOneTodoByTodoId(todoId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_TODO_ID));
+
+        if (todo.isClearYN()) {
+            throw new CustomException(ErrorCode.ALREADY_CLEAR_TODO);
+        }
 
         if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, categoryId) == null){
             throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
