@@ -1,8 +1,6 @@
 package com.todomypet.todoservice.service;
 
-import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
-import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
-import com.todomypet.todoservice.dto.category.GetCategoryListResDTO;
+import com.todomypet.todoservice.dto.category.*;
 
 public interface CategoryService {
     AddCategoryResDTO addCategory(String userId, AddCategoryReqDTO addCategoryReqDTO);
@@ -10,4 +8,6 @@ public interface CategoryService {
     void deleteCategory(String userId, String categoryId);
 
     GetCategoryListResDTO getCategoryListByUser(String userId);
+
+    UpdateCategoryResDTO updateCategory(String userId, String categoryId, UpdateCategoryReqDTO updateCategoryInfo);
 }

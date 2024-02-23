@@ -25,4 +25,7 @@ public interface CategoryRepository extends Neo4jRepository<Category, String> {
 
     @Query("MATCH (c:Category)-[i:INCLUDE]->(t:Todo{id:$todoId}) RETURN c")
     Optional<Category> getCategoryByTodoId(String todoId);
+
+    @Query("MATCH (c:Category{id:$categoryId}) SET c.name = $name")
+    void updateCategoryName(String categoryId, String name);
 }

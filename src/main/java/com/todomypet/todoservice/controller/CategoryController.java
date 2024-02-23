@@ -1,9 +1,7 @@
 package com.todomypet.todoservice.controller;
 
 import com.todomypet.todoservice.dto.SuccessResDTO;
-import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
-import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
-import com.todomypet.todoservice.dto.category.GetCategoryListResDTO;
+import com.todomypet.todoservice.dto.category.*;
 import com.todomypet.todoservice.service.CategoryService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +31,13 @@ public class CategoryController {
                                                      @RequestBody AddCategoryReqDTO addCategoryReqDTO) {
         AddCategoryResDTO response = categoryService.addCategory(userId, addCategoryReqDTO);
         return new SuccessResDTO<AddCategoryResDTO>(response);
+    }
+
+    @PutMapping("/category/{categoryId}")
+    public SuccessResDTO<UpdateCategoryResDTO> updateCategory(@RequestHeader String userId, @PathVariable String categoryId,
+                                                              @RequestBody UpdateCategoryReqDTO updateCategoryInfo) {
+        UpdateCategoryResDTO response = categoryService.updateCategory(userId, categoryId, updateCategoryInfo);
+        return new SuccessResDTO<UpdateCategoryResDTO>(response);
     }
 
     @Operation(summary = "카테고리 삭제", description = "카테고리를 삭제합니다. 포함된 todo는 모두 미분류로 이동됩니다.")

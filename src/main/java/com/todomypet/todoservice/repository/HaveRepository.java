@@ -25,4 +25,9 @@ public interface HaveRepository extends Neo4jRepository<Have, Long> {
     @Query("MATCH (:User)-[h:HAVE]->(:Category)-[:INCLUDE]->(:Todo{id:$todoId}) " +
             "RETURN h{.bgCode, .textCode}")
     Have getHaveByTodoId(String todoId);
+
+    @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[h:HAVE]->(c:Category{id:$categoryId}) " +
+            "SET h.colorCode = $colorCode, h.bgCode = $bgCode, h.textCode = $textCode")
+    void updateHaveRelationshipColor(String userId, String categoryId,
+                                     String colorCode, String bgCode, String textCode);
 }

@@ -3,11 +3,8 @@ package com.todomypet.todoservice.service;
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.todomypet.todoservice.domain.node.ColorSet;
 import com.todomypet.todoservice.domain.node.Todo;
-import com.todomypet.todoservice.dto.category.AddCategoryReqDTO;
+import com.todomypet.todoservice.dto.category.*;
 import com.todomypet.todoservice.domain.node.Category;
-import com.todomypet.todoservice.dto.category.AddCategoryResDTO;
-import com.todomypet.todoservice.dto.category.CategoryInfoResDTO;
-import com.todomypet.todoservice.dto.category.GetCategoryListResDTO;
 import com.todomypet.todoservice.exception.CustomException;
 import com.todomypet.todoservice.exception.ErrorCode;
 import com.todomypet.todoservice.repository.*;
@@ -68,6 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public GetCategoryListResDTO getCategoryListByUser(String userId) {
         List<Category> categories = categoryRepository.getCategoryListByUserId(userId);
         List<CategoryInfoResDTO> response = new ArrayList<>();
@@ -80,5 +78,26 @@ public class CategoryServiceImpl implements CategoryService {
                     .build());
         }
         return GetCategoryListResDTO.builder().categoryList(response).build();
+    }
+
+    @Override
+    @Transactional
+    public UpdateCategoryResDTO updateCategory(String userId, String categoryId, UpdateCategoryReqDTO updateCategoryInfo) {
+        Category category = Category.builder()
+                .name(updateCategoryInfo.getName())
+                .id(String.valueOf(UlidCreator.getUlid())).build();
+
+        if (haveRepository.existsHaveRelationshipBetweenUserAndCategoryName(userId, updateCategoryInfo.getName()) != null) {
+            return UpdateCategoryResDTO.builder().duplicatedOrNot(true).categoryId(null).build();
+        }
+
+        categoryRepository.updateCategoryName(categoryId, updateCategoryInfo.getName());
+
+        ColorSet colorSet = colorSetRepository.getColorSetByColorCode(updateCategoryInfo.getColorCode());
+
+        haveRepository.updateHaveRelationshipColor(userId, categoryId, colorSet.getColorCode(), colorSet.getBgCode(),
+                colorSet.getTextCode());
+
+        return UpdateCategoryResDTO.builder().categoryId(categoryId).duplicatedOrNot(false).build();
     }
 }
