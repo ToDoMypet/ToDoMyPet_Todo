@@ -177,7 +177,7 @@ public class TodoServiceImpl implements TodoService {
                             .todoId(todo.getId())
                             .content(todo.getContent())
                             .clearYN(todo.isClearYN())
-                            .alertAt(String.valueOf(todo.getAlertAt()))
+                            .startedAtTime(String.valueOf(todo.getStartedAtTime()))
                             .alertType(todo.getAlertType())
                             .build());
                 });

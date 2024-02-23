@@ -13,6 +13,6 @@ public class TodoInGetTodoByDayDTO {
     private String content;
     private boolean clearYN;
     private boolean receiveAlert;
-    private String alertAt;
+    private String startedAtTime;
     private AlertType alertType;
 }
