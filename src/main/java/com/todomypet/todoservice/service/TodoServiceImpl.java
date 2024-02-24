@@ -85,10 +85,10 @@ public class TodoServiceImpl implements TodoService {
                 todoBuilder.endedAtTime(LocalTime.parse(req.getEndedAtTime()));
             }
             if (todoInfoReqDTO.getRepeatInfo().getRepeatEndDate() != null) {
-                todoBuilder.repeatStartDate(todoInfoReqDTO.getRepeatInfo().getRepeatEndDate());
+                todoBuilder.repeatEndDate(todoInfoReqDTO.getRepeatInfo().getRepeatEndDate());
             }
             if (todoInfoReqDTO.getRepeatInfo().getRepeatStartDate() != null) {
-                todoBuilder.repeatEndDate(todoInfoReqDTO.getRepeatInfo().getRepeatStartDate());
+                todoBuilder.repeatStartDate(todoInfoReqDTO.getRepeatInfo().getRepeatStartDate());
             }
 
             Todo todo = todoBuilder.build();
@@ -250,6 +250,7 @@ public class TodoServiceImpl implements TodoService {
                 .markOnTheCalenderOrNot(todo.isMarkOnTheCalenderOrNot())
                 .alertAt(todo.getAlertAt()).alertType(todo.getAlertType())
                 .repeatType(todo.getRepeatType()).repeatData(todo.getRepeatData())
+                .repeatEndDate(todo.getRepeatEndDate())
                 .endedAtDate(todo.getEndedAtDate()).endedAtTime(todo.getEndedAtTime()).build();
     }
 

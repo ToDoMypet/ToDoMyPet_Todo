@@ -23,6 +23,7 @@ public class TodoDetailResDTO {
     private LocalTime endedAtTime;
     private RepeatType repeatType;
     private List<Integer> repeatData;
+    private LocalDate repeatEndDate;
     private boolean markOnTheCalenderOrNot;
     private boolean receiveAlert;
     private AlertType alertType;
