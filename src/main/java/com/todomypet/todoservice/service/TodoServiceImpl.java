@@ -22,10 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -45,6 +42,7 @@ public class TodoServiceImpl implements TodoService {
         List<AddTodoResDTO> response = new ArrayList<>();
         RepeatType repeatType = todoInfoReqDTO.getRepeatInfo().getRepeatType();
         List<Integer> repeatData = todoInfoReqDTO.getRepeatInfo().getRepeatData();
+        repeatData.sort(Integer::compareTo);
         StringBuilder repeatCode = new StringBuilder();
         Random rnd = new Random();
 
@@ -225,7 +223,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional
     public String deleteTodo(String userId, String todoId) {
-        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+        Todo todo = todoRepository.getTodoByUserIdAndTodoId(userId, todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
 
         if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
@@ -241,7 +239,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional
     public TodoDetailResDTO getTodoDetail(String userId, String todoId) {
-        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+        Todo todo = todoRepository.getTodoByUserIdAndTodoId(userId, todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
         Category category = categoryRepository.getCategoryByTodoId(todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.NOT_EXISTS_CATEGORY));
@@ -281,7 +279,7 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional
     public String endTheRepeatTodo(String userId, String todoId) {
-        Todo todo = todoRepository.existsByUserIdAndTodoId(userId, todoId).orElseThrow(()
+        Todo todo = todoRepository.getTodoByUserIdAndTodoId(userId, todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
 
         String repeatCode = todo.getRepeatCode();
