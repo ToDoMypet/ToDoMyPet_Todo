@@ -126,7 +126,9 @@ public class TodoServiceImpl implements TodoService {
                 String petSeq = petServiceClient.getMainPet(userId).getData();
                 petServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
                         .petSeqId(petSeq).experiencePoint(5).build());
+                // todo: 업적 달성 로직 추가 필요
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);
             }
 
@@ -279,13 +281,15 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public String endTheRepeatTodo(String userId, String todoId) {
-        Todo todo = todoRepository.getTodoByUserIdAndTodoId(userId, todoId).orElseThrow(()
+    public String endTheRepeatTodo(String userId, EndTheRepeatTodoReqDTO req) {
+        Todo todo = todoRepository.getTodoByUserIdAndTodoId(userId, req.getTodoId()).orElseThrow(()
                 -> new CustomException(ErrorCode.WRONG_USER_AND_TODO));
 
+        LocalDate repeatEndedAt = LocalDate.parse(req.getRepeatEndDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String repeatCode = todo.getRepeatCode();
-        todoRepository.endTheRepeatTodoByRepeatCode(repeatCode);
+        todoRepository.endTheRepeatTodoByRepeatCode(repeatCode, repeatEndedAt.getYear(),
+                repeatEndedAt.getMonthValue(), repeatEndedAt.getDayOfMonth());
 
-        return todoId;
+        return req.getTodoId();
     }
 }

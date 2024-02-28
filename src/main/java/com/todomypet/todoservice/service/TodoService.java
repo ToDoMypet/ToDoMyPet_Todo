@@ -21,5 +21,5 @@ public interface TodoService {
 
     String updateTodo(String userId, String todoId, UpdateTodoReqDTO updateInfos);
 
-    String endTheRepeatTodo(String userId, String todoId);
+    String endTheRepeatTodo(String userId, EndTheRepeatTodoReqDTO req);
 }
