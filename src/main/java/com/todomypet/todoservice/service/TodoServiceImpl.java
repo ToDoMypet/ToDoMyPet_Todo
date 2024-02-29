@@ -259,24 +259,68 @@ public class TodoServiceImpl implements TodoService {
     @Override
     @Transactional
     public String updateTodo(String userId, String todoId, UpdateTodoReqDTO updateInfos) {
-//        Todo todo = todoRepository.getOneTodoByTodoId(todoId)
-//                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_TODO_ID));
-//
-//        // 카테고리 수정되는 경우 고려해야 함
-//
-//        if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
-//            if (includeRepository.existsIncludeRelationshipBetweenCategoryAndTodo(categoryId, todoId))
-//            todoRepository.updateTodoByTodoId();
-//            return null;
-//        }
-//
-//        if (updateInfos.isUpdatePastRepeatDataOrNot()) {
-//            // 이전 데이터 함께 업데이트
-//        } else {
-//            // 이후 데이터만 업데이트
-//        }
+        Todo todo = todoRepository.getOneTodoByTodoId(todoId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_EXISTS_TODO_ID));
 
-        return null;
+        Category curCategory = categoryRepository.getCategoryByTodoId(todoId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CANT_FIND_TODOS_CATEGORY_INFO));
+        String updatedCategoryId = updateInfos.getTodoInfos().get(0).getCategoryId();
+        if (!curCategory.getId().equals(updatedCategoryId)) {
+            includeRepository.deleteIncludeBetweenCategoryAndTodo(curCategory.getId(), todoId);
+            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, updatedCategoryId);
+        }
+
+        if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
+            TodoInfoReqDTO todoInfo = updateInfos.getTodoInfos().get(0);
+            todoRepository.updateTodoByTodoId(todoId, todoInfo.getContent(), todoInfo.getStartedAtDate(),
+                    todoInfo.getStartedAtTime(), todoInfo.getEndedAtDate(),
+                    todoInfo.getEndedAtTime(), todoInfo.isReceiveAlert(),
+                    todoInfo.isMarkOnTheCalenderOrNot(), todoInfo.getAlertAt(),
+                    todoInfo.getAlertType());
+            return todoId;
+        }
+
+        RepeatInfoReqDTO repeatInfo = updateInfos.getRepeatInfo();
+
+
+        for (TodoInfoReqDTO todoInfo : updateInfos.getTodoInfos()) {
+            if (haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, todoInfo.getCategoryId()) == null) {
+                throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
+            };
+
+            Todo.TodoBuilder todoBuilder = Todo.builder().id(UlidCreator.getUlid().toString())
+                    .content(todoInfo.getContent())
+                    .startedAtDate(LocalDate.parse(todoInfo.getStartedAtDate()))
+                    .receiveAlert(todoInfo.isReceiveAlert()).clearYN(false)
+                    .getExperiencePointOrNot(false).markOnTheCalenderOrNot(todoInfo.isMarkOnTheCalenderOrNot())
+                    .alertAt(todoInfo.getAlertAt())
+                    .alertType(todoInfo.getAlertType())
+                    .repeatType(repeatInfo.getRepeatType())
+                    .repeatData(repeatInfo.getRepeatData())
+                    .repeatCode(todo.getRepeatCode());
+
+            if (todoInfo.getStartedAtTime() != null) {
+                todoBuilder.startedAtTime(LocalTime.parse(todoInfo.getStartedAtTime()));
+            }
+            if (todoInfo.getEndedAtDate() != null) {
+                todoBuilder.endedAtDate(LocalDate.parse(todoInfo.getEndedAtDate()));
+            }
+            if (todoInfo.getEndedAtTime() != null) {
+                todoBuilder.endedAtTime(LocalTime.parse(todoInfo.getEndedAtTime()));
+            }
+            if (updateInfos.getRepeatInfo().getRepeatEndDate() != null) {
+                todoBuilder.repeatEndDate(updateInfos.getRepeatInfo().getRepeatEndDate());
+            }
+            if (updateInfos.getRepeatInfo().getRepeatStartDate() != null) {
+                todoBuilder.repeatStartDate(updateInfos.getRepeatInfo().getRepeatStartDate());
+            }
+
+            todoRepository.save(todoBuilder.build());
+
+            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, todoInfo.getCategoryId());
+        }
+
+        return todoId;
     }
 
     @Override

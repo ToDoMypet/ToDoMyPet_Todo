@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Builder
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateTodoReqDTO {
-    private TodoInfoReqDTO todoInfo;
+    private List<TodoInfoReqDTO> todoInfos;
     private RepeatInfoReqDTO repeatInfo;
-    private boolean updatePastRepeatDataOrNot;
+    private LocalDate editFrom;
 }

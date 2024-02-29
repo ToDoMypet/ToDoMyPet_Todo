@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddTodoReqDTO {
-    List<TodoInfoReqDTO> todoInfos;
-    RepeatInfoReqDTO repeatInfo;
+    private List<TodoInfoReqDTO> todoInfos;
+    private RepeatInfoReqDTO repeatInfo;
 }

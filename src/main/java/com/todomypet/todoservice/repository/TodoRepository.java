@@ -1,5 +1,6 @@
 package com.todomypet.todoservice.repository;
 
+import com.todomypet.todoservice.domain.node.AlertType;
 import com.todomypet.todoservice.domain.node.Todo;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
@@ -7,6 +8,9 @@ import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -65,4 +69,12 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "(t.startedAtDate <= date({year:$year, month:$month, day:$day}) AND t.endedAtDate >= date({year:$year, month:$month, day:$day})) " +
             "return t")
     List<Todo> getAllTodoByCategoryIdAndDay(String userId, String categoryId, int year, int month, int day);
+
+    @Query("MATCH (t:Todo{id$todoId}) SET t.content = $content, t.startedAtDate = $startedAtDate, " +
+            "t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime, " +
+            "receiveAlert = $receiveAlert, t.markOnTheCalenderOrNot = $markOnTheCalenderOrNot, t.alertAt = $alertAt, " +
+            "t.alertType = $alertType")
+    void updateTodoByTodoId(String todoId, String content, String startedAtDate, String startedAtTime, String endedAtDate,
+                            String endedAtTime, boolean receiveAlert, boolean markOnTheCalenderOrNot,
+                            LocalDateTime alertAt, AlertType alertType);
 }
