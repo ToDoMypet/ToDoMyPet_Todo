@@ -9,6 +9,7 @@ import com.todomypet.todoservice.domain.relationship.Have;
 import com.todomypet.todoservice.domain.relationship.Include;
 import com.todomypet.todoservice.dto.openFeign.AchieveReqDTO;
 import com.todomypet.todoservice.dto.openFeign.CheckAchieveOrNotReqDTO;
+import com.todomypet.todoservice.dto.openFeign.CheckAchievementOrNotResDTO;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
@@ -131,13 +132,14 @@ public class TodoServiceImpl implements TodoService {
                 petServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
                         .petSeqId(petSeq).experiencePoint(5).build());
                 int condition = userServiceClient.increaseAndGetTodoClearCount(userId).getData();
-                if (userServiceClient.checkAchieveOrNot(userId,
-                        CheckAchieveOrNotReqDTO.builder().type(AchievementType.ACHIEVE).condition(condition)
-                                .build()).getData()) {
-                    userServiceClient.achieve(userId, AchieveReqDTO.builder()
-                            .type(AchievementType.ACHIEVE).condition(condition).build());
-                };
 
+                CheckAchievementOrNotResDTO achievementOrNotRes = userServiceClient.checkAchieveOrNot(userId,
+                        CheckAchieveOrNotReqDTO.builder().type(AchievementType.ACHIEVE).condition(condition)
+                                .build()).getData();
+                if (achievementOrNotRes.isAchieveOrNot()) {
+                    userServiceClient.achieve(userId, AchieveReqDTO.builder()
+                            .achievementId(achievementOrNotRes.getAchievementId()).build());
+                };
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);

@@ -2,6 +2,7 @@ package com.todomypet.todoservice.service;
 
 import com.todomypet.todoservice.dto.openFeign.AchieveReqDTO;
 import com.todomypet.todoservice.dto.openFeign.CheckAchieveOrNotReqDTO;
+import com.todomypet.todoservice.dto.openFeign.CheckAchievementOrNotResDTO;
 import com.todomypet.todoservice.dto.openFeign.FeignClientResDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +13,8 @@ public interface UserServiceClient {
     FeignClientResDTO<Integer> increaseAndGetTodoClearCount(@RequestHeader String userId);
 
     @PostMapping(value = "/achievement/achieve-or-not", consumes = "application/json")
-    FeignClientResDTO<Boolean> checkAchieveOrNot(@RequestHeader String userId,
-                                                 @RequestBody CheckAchieveOrNotReqDTO req);
+    FeignClientResDTO<CheckAchievementOrNotResDTO> checkAchieveOrNot(@RequestHeader String userId,
+                                                                     @RequestBody CheckAchieveOrNotReqDTO req);
 
     @PostMapping(value = "/achievement", consumes = "application/json")
     FeignClientResDTO<Void> achieve(@RequestHeader String userId,

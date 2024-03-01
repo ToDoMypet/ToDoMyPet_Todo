@@ -7,6 +7,5 @@ import lombok.Getter;
 @Builder
 @Getter
 public class AchieveReqDTO {
-    private AchievementType type;
-    private int condition;
+    private String achievementId;
 }
