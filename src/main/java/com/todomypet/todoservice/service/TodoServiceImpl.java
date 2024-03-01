@@ -1,11 +1,14 @@
 package com.todomypet.todoservice.service;
 
 import com.github.f4b6a3.ulid.UlidCreator;
+import com.todomypet.todoservice.domain.node.AchievementType;
 import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.domain.node.RepeatType;
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.domain.relationship.Have;
 import com.todomypet.todoservice.domain.relationship.Include;
+import com.todomypet.todoservice.dto.openFeign.AchieveReqDTO;
+import com.todomypet.todoservice.dto.openFeign.CheckAchieveOrNotReqDTO;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
@@ -33,6 +36,7 @@ public class TodoServiceImpl implements TodoService {
     private final IncludeRepository includeRepository;
     private final PetServiceClient petServiceClient;
     private final CategoryRepository categoryRepository;
+    private final UserServiceClient userServiceClient;
 
 
     @Override
@@ -126,7 +130,14 @@ public class TodoServiceImpl implements TodoService {
                 String petSeq = petServiceClient.getMainPet(userId).getData();
                 petServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
                         .petSeqId(petSeq).experiencePoint(5).build());
-                // todo: 업적 달성 로직 추가 필요
+                int condition = userServiceClient.increaseAndGetTodoClearCount(userId).getData();
+                if (userServiceClient.checkAchieveOrNot(userId,
+                        CheckAchieveOrNotReqDTO.builder().type(AchievementType.ACHIEVE).condition(condition)
+                                .build()).getData()) {
+                    userServiceClient.achieve(userId, AchieveReqDTO.builder()
+                            .type(AchievementType.ACHIEVE).condition(condition).build());
+                };
+
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);
