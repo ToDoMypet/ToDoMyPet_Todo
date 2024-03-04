@@ -66,7 +66,8 @@ public class TodoController {
         return new SuccessResDTO<String>(deletedTodoId);
     }
 
-    @Operation(summary = "투두 반복 종료", description = "반복 설정된 투두를 종료합니다. 종료일 기준 이후 모든 반복 일정이 삭제됩니다.")
+    @Operation(summary = "투두 반복 종료", description = "반복 설정된 투두를 종료합니다. 종료일 기준 이후 모든 반복 일정이 삭제됩니다. " +
+                                                        "repeatEndDate는 YYYY-MM-dd 형태로 요청합니다.")
     @PutMapping("/todo/end-the-repeat")
     public SuccessResDTO<String> endTheRepeatTodo(@RequestHeader String userId,
                                                   @RequestBody EndTheRepeatTodoReqDTO endTheRepeatRequestInfo) {
@@ -76,7 +77,7 @@ public class TodoController {
 
 
     @Operation(summary = "월별 투두 조회", description = "월별 투두를 조회합니다. {month}는 YYYY-MM 형태로 조회하며, " +
-                                                        "해당 월의 전후월 데이터를 함께 조회합니다. **현재 가데이터**")
+                                                        "해당 월의 전후월 데이터를 함께 조회합니다.")
     @GetMapping("/todo/month/{month}")
     public SuccessResDTO<List<GetTodoByMonthResDTO>> getTodoByMonth(@RequestHeader String userId,
                                                                     @PathVariable String month) {
@@ -84,7 +85,7 @@ public class TodoController {
         return new SuccessResDTO<List<GetTodoByMonthResDTO>>(response);
     }
 
-    @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다. **현재 가데이터**")
+    @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다.")
     @GetMapping("/todo/daily/{day}")
     public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {
         List<GetTodoByDayResDTO> response = todoService.getTodoByDay(userId, day);

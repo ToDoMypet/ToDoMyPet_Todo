@@ -15,4 +15,5 @@ public class TodoInGetTodoByDayDTO {
     private boolean receiveAlert;
     private String startedAtTime;
     private AlertType alertType;
+    private boolean getExperiencePointOrNot;
 }

@@ -198,6 +198,7 @@ public class TodoServiceImpl implements TodoService {
                             .clearYN(todo.isClearYN())
                             .startedAtTime(todo.getStartedAtTime() != null ? String.valueOf(todo.getStartedAtTime()) : null)
                             .alertType(todo.getAlertType())
+                            .getExperiencePointOrNot(todo.isGetExperiencePointOrNot())
                             .build());
                 });
 
