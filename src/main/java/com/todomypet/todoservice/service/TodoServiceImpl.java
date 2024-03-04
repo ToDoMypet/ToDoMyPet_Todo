@@ -260,7 +260,8 @@ public class TodoServiceImpl implements TodoService {
         Category category = categoryRepository.getCategoryByTodoId(todoId).orElseThrow(()
                 -> new CustomException(ErrorCode.NOT_EXISTS_CATEGORY));
         Have have = haveRepository.existsHaveRelationshipBetweenUserAndCategory(userId, category.getId());
-        return TodoDetailResDTO.builder().todoId(todo.getId()).content(todo.getContent())
+        return TodoDetailResDTO.builder().todoId(todo.getId()).categoryId(category.getId())
+                .content(todo.getContent())
                 .categoryName(category.getName()).categoryColorCode(have.getColorCode())
                 .startedAtDate(todo.getStartedAtDate()).startedAtTime(todo.getStartedAtTime())
                 .markOnTheCalenderOrNot(todo.isMarkOnTheCalenderOrNot())

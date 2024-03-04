@@ -15,6 +15,7 @@ import java.util.List;
 public class TodoDetailResDTO {
     private String todoId;
     private String content;
+    private String categoryId;
     private String categoryName;
     private String categoryColorCode;
     private LocalDate startedAtDate;
