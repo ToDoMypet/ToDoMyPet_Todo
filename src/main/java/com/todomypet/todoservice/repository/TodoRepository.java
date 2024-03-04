@@ -60,7 +60,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     void deleteAllByRepeatCode(String repeatCode);
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) " +
-            "WHERE t.startedAtDate > date({year:$year, month:$month, day:$day}) DETACH DELETE t")
+            "WHERE t.startedAtDate >= date({year:$year, month:$month, day:$day}) DETACH DELETE t")
     void endTheRepeatTodoByRepeatCode(String repeatCode, int year, int month, int day);
 
     @Query("MATCH (u:User{id:$userId}) WITH u " +
@@ -77,4 +77,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     void updateTodoByTodoId(String todoId, String content, String startedAtDate, String startedAtTime, String endedAtDate,
                             String endedAtTime, boolean receiveAlert, boolean markOnTheCalenderOrNot,
                             LocalDateTime alertAt, AlertType alertType);
+
+    @Query("MATCH (t:Todo{repeatCode:$repeatCode}) SET t.repeatEndDate = $repeatEndDate")
+    void updateTodoRepeatEndDateByRepeatCode(String repeatCode, LocalDate repeatEndDate);
 }
