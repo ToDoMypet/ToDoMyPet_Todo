@@ -303,7 +303,9 @@ public class TodoServiceImpl implements TodoService {
                 throw new CustomException(ErrorCode.WRONG_CATEGORY_ID);
             };
 
-            Todo.TodoBuilder todoBuilder = Todo.builder().id(UlidCreator.getUlid().toString())
+            String savedTodoId = UlidCreator.getUlid().toString();
+
+            Todo.TodoBuilder todoBuilder = Todo.builder().id(savedTodoId)
                     .content(todoInfo.getContent())
                     .startedAtDate(LocalDate.parse(todoInfo.getStartedAtDate()))
                     .receiveAlert(todoInfo.isReceiveAlert()).clearYN(false)
@@ -332,7 +334,7 @@ public class TodoServiceImpl implements TodoService {
 
             todoRepository.save(todoBuilder.build());
 
-            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, todoInfo.getCategoryId());
+            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, savedTodoId);
         }
 
         return todoId;
