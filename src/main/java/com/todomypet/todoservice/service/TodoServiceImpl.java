@@ -352,7 +352,7 @@ public class TodoServiceImpl implements TodoService {
 
             todoRepository.save(todoBuilder.build());
 
-            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(todoId, savedTodoId);
+            includeRepository.createIncludeRelationshipBetweenCategoryAndTodo(savedTodoId, todoInfo.getCategoryId());
         }
 
         return todoId;
