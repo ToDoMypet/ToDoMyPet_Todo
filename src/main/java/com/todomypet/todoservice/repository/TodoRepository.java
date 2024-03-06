@@ -71,17 +71,24 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "return t")
     List<Todo> getAllTodoByCategoryIdAndDay(String userId, String categoryId, int year, int month, int day);
 
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.content = $content, t.startedAtDate = $startedAtDate, " +
-            "t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime, " +
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.content = $content, " +
             "t.receiveAlert = $receiveAlert, t.markOnTheCalenderOrNot = $markOnTheCalenderOrNot, t.alertAt = $alertAt, " +
-            "t.alertType = $alertType")
-    void updateTodoByTodoId(String todoId, String content, LocalDate startedAtDate, LocalTime startedAtTime, LocalDate endedAtDate,
-                            LocalTime endedAtTime, boolean receiveAlert, boolean markOnTheCalenderOrNot,
-                            LocalDateTime alertAt, AlertType alertType);
+            "t.startedAtDate = $startedAtDate, t.alertType = $alertType")
+    void updateTodoByTodoId(String todoId, String content, boolean receiveAlert, boolean markOnTheCalenderOrNot,
+                            LocalDateTime alertAt, LocalDate startedAtDate, AlertType alertType);
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) SET t.repeatEndDate = $repeatEndDate")
     void updateTodoRepeatEndDateByRepeatCode(String repeatCode, LocalDate repeatEndDate);
 
     @Query("MATCH (t:Todo{alertAt:$alertAt}) RETURN t")
     List<Todo> getAllTodoByAlertAt(LocalDateTime alertAt);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime")
+    void updateTodoStartedAtTime(String todoId, LocalTime startedAtTime);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = endedAtDate")
+    void updateTodoEndedAtDate(String todoId, LocalDate endedAtDate);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = endedAtTime")
+    void updateTodoEndedAtTime(String todoId, LocalTime endedAtTime);
 }
