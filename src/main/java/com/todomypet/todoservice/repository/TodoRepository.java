@@ -80,4 +80,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) SET t.repeatEndDate = $repeatEndDate")
     void updateTodoRepeatEndDateByRepeatCode(String repeatCode, LocalDate repeatEndDate);
+
+    @Query("MATCH (t:Todo{alertAt:$alertAt}) RETURN t")
+    List<Todo> getAllTodoByAlertAt(LocalDateTime alertAt);
 }

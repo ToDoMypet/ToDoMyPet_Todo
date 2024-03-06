@@ -354,4 +354,18 @@ public class TodoServiceImpl implements TodoService {
         todoRepository.updateTodoRepeatEndDateByRepeatCode(repeatCode, updatedRepeatEndedAt);
         return req.getTodoId();
     }
+
+    @Override
+    public List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(String alertAt) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse(alertAt, formatter);
+        List<GetTodoByAlertTimeResDTO> response = new ArrayList<>();
+
+        List<Todo> todos = todoRepository.getAllTodoByAlertAt(dateTime);
+        for (Todo todo : todos) {
+            response.add(GetTodoByAlertTimeResDTO.builder().todoId(todo.getId())
+                    .todoContent(todo.getContent()).build());
+        }
+        return response;
+    }
 }

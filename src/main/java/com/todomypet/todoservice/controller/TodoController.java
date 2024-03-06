@@ -3,6 +3,7 @@ package com.todomypet.todoservice.controller;
 import com.todomypet.todoservice.dto.SuccessResDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.service.TodoService;
+import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -90,5 +91,12 @@ public class TodoController {
     public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {
         List<GetTodoByDayResDTO> response = todoService.getTodoByDay(userId, day);
         return new SuccessResDTO<>(response);
+    }
+
+    @Hidden
+    @GetMapping("/todo/get-by-alert-time/{alertAt}")
+    public SuccessResDTO<List<GetTodoByAlertTimeResDTO>> getByAlertTime(@PathVariable String alertAt) {
+        List<GetTodoByAlertTimeResDTO> response = todoService.getTodoByAlertAt(alertAt);
+        return new SuccessResDTO<List<GetTodoByAlertTimeResDTO>>(response);
     }
 }

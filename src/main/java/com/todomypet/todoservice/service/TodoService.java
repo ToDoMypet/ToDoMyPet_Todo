@@ -22,4 +22,6 @@ public interface TodoService {
     String updateTodo(String userId, String todoId, UpdateTodoReqDTO updateInfos);
 
     String endTheRepeatTodo(String userId, EndTheRepeatTodoReqDTO req);
+
+    List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(String alertAt);
 }
