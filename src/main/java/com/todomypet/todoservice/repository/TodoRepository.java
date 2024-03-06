@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.Collection;
 import java.util.List;
@@ -74,8 +75,8 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
             "t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime, " +
             "t.receiveAlert = $receiveAlert, t.markOnTheCalenderOrNot = $markOnTheCalenderOrNot, t.alertAt = $alertAt, " +
             "t.alertType = $alertType")
-    void updateTodoByTodoId(String todoId, String content, String startedAtDate, String startedAtTime, String endedAtDate,
-                            String endedAtTime, boolean receiveAlert, boolean markOnTheCalenderOrNot,
+    void updateTodoByTodoId(String todoId, String content, LocalDate startedAtDate, LocalTime startedAtTime, LocalDate endedAtDate,
+                            LocalTime endedAtTime, boolean receiveAlert, boolean markOnTheCalenderOrNot,
                             LocalDateTime alertAt, AlertType alertType);
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) SET t.repeatEndDate = $repeatEndDate")
