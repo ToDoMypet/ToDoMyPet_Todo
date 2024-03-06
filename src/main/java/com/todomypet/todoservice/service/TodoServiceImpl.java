@@ -155,8 +155,12 @@ public class TodoServiceImpl implements TodoService {
     public List<GetTodoByMonthResDTO> getTodoByMonth(String userId, String month) {
         List<GetTodoByMonthResDTO> response = new ArrayList<>();
         LocalDate searchTarget = LocalDate.parse(month + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        LocalDate preTarget = searchTarget.minusMonths(1);
 
-        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth(userId, searchTarget.getYear(), searchTarget.getMonthValue());
+        LocalDate postTarget = searchTarget.plusMonths(1);
+        int lastDayOfPostMonth = postTarget.lengthOfMonth();
+        List<Todo> todos = todoRepository.getAllTodoByUserAndMonth(userId, preTarget.getYear(), preTarget.getMonthValue(),
+                postTarget.getYear(), postTarget.getMonthValue(), lastDayOfPostMonth);
 
         for (Todo todo : todos) {
             Have have = haveRepository.getHaveByTodoId(todo.getId());

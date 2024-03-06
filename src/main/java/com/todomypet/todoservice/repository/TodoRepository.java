@@ -42,11 +42,12 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     Optional<Todo> getTodoByUserIdAndTodoId(String userId, String todoId);
 
     @Query("MATCH (u:User {id:$userId})-[:HAVE]->(c:Category)-[:INCLUDE]->(t:Todo) " +
-            "WHERE date(t.startedAtDate).year = $year AND date(t.startedAtDate).month = $month OR " +
-            "date(t.endedAtDate).year = $year AND date(t.startedAtDate).month = $month " +
-            "OR (date(t.startedAtDate) <= date({year:$year, month:$month}) <= date(t.endedAtDate)) " +
+            "WHERE (date({year:$preYear, month:$preMonth, day:1}) <= t.startedAtDate <= date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}) OR " +
+            "date({year:$preYear, month:$preMonth, day:1}) <= t.endedAtDate <= date({year:$postYear, month:$postMonth, day:$dayOfPostMonth})) OR " +
+            "(t.startedAtDate < date({year:$preYear, month:$preMonth, day:1}) AND t.endedAtDate > date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}))" +
             "RETURN DISTINCT t ORDER BY t.id ASC")
-    List<Todo> getAllTodoByUserAndMonth(String userId, int year, int month);
+    List<Todo> getAllTodoByUserAndMonth(String userId, int preYear, int preMonth,
+                                        int postYear, int postMonth, int dayOfPostMonth);
 
     @Query("MATCH (t:Todo) WHERE t.repeatCode = $repeatCode RETURN t")
     List<Todo> getTodoByRepeatCode(String repeatCode);
