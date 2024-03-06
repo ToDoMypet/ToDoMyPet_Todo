@@ -296,6 +296,10 @@ public class TodoServiceImpl implements TodoService {
         }
 
         RepeatInfoReqDTO repeatInfo = updateInfos.getRepeatInfo();
+        LocalDate repeatEndedAt = updateInfos.getEditFrom();
+
+        todoRepository.endTheRepeatTodoByRepeatCode(todo.getRepeatCode(), repeatEndedAt.getYear(),
+                repeatEndedAt.getMonthValue(), repeatEndedAt.getDayOfMonth());
 
 
         for (TodoInfoReqDTO todoInfo : updateInfos.getTodoInfos()) {
