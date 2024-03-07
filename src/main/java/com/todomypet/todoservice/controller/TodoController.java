@@ -99,4 +99,11 @@ public class TodoController {
         List<GetTodoByAlertTimeResDTO> response = todoService.getTodoByAlertAt(alertAt);
         return new SuccessResDTO<List<GetTodoByAlertTimeResDTO>>(response);
     }
+
+    @Hidden
+    @DeleteMapping("/todo/delete-all-category-and-todo")
+    public SuccessResDTO<List<GetTodoByAlertTimeResDTO>> deleteAllCategoryAndTodoByUserId(@RequestHeader String userId) {
+        todoService.deleteAllCategoryAndTodoByUserId(userId);
+        return new SuccessResDTO<>(null);
+    }
 }

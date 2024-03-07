@@ -386,4 +386,11 @@ public class TodoServiceImpl implements TodoService {
         }
         return response;
     }
+
+    @Override
+    @Transactional
+    public void deleteAllCategoryAndTodoByUserId(String userId) {
+        todoRepository.deleteAllTodoByUserId(userId);
+        categoryRepository.deleteAllCategoryByUserId(userId);
+    }
 }
