@@ -314,6 +314,8 @@ public class TodoServiceImpl implements TodoService {
 
         todoRepository.endTheRepeatTodoByRepeatCode(todo.getRepeatCode(), repeatEndedAt.getYear(),
                 repeatEndedAt.getMonthValue(), repeatEndedAt.getDayOfMonth());
+        todoRepository.updateTodoRepeatEndDateByRepeatCode(todo.getRepeatCode(),
+                updateInfos.getRepeatInfo().getRepeatEndDate());
 
 
         for (TodoInfoReqDTO todoInfo : updateInfos.getTodoInfos()) {
