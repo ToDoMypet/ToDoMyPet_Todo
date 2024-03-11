@@ -2,6 +2,7 @@ package com.todomypet.todoservice.service;
 
 import com.todomypet.todoservice.dto.todo.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TodoService {
@@ -23,7 +24,7 @@ public interface TodoService {
 
     String endTheRepeatTodo(String userId, EndTheRepeatTodoReqDTO req);
 
-    List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(String alertAt);
+    GetTodoByAlertTimeResListDTO getTodoByAlertAt(LocalDateTime alertAt);
 
     void deleteAllCategoryAndTodoByUserId(String userId);
 }

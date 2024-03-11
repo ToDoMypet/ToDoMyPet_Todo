@@ -95,9 +95,9 @@ public class TodoController {
 
     @Hidden
     @GetMapping("/todo/get-by-alert-time/{alertAt}")
-    public SuccessResDTO<List<GetTodoByAlertTimeResDTO>> getByAlertTime(@PathVariable String alertAt) {
-        List<GetTodoByAlertTimeResDTO> response = todoService.getTodoByAlertAt(alertAt);
-        return new SuccessResDTO<List<GetTodoByAlertTimeResDTO>>(response);
+    public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@PathVariable LocalDateTime alertAt) {
+        GetTodoByAlertTimeResListDTO response = todoService.getTodoByAlertAt(alertAt);
+        return new SuccessResDTO<GetTodoByAlertTimeResListDTO>(response);
     }
 
     @Hidden

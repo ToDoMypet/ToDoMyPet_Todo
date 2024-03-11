@@ -87,10 +87,10 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime")
     void updateTodoStartedAtTime(String todoId, LocalTime startedAtTime);
 
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = endedAtDate")
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = $endedAtDate")
     void updateTodoEndedAtDate(String todoId, LocalDate endedAtDate);
 
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = endedAtTime")
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = $endedAtTime")
     void updateTodoEndedAtTime(String todoId, LocalTime endedAtTime);
 
     @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(:Category)-[:INCLUDE]->(t:Todo) DETACH DELETE t")

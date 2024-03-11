@@ -376,17 +376,15 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(String alertAt) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        LocalDateTime dateTime = LocalDateTime.parse(alertAt, formatter);
+    public GetTodoByAlertTimeResListDTO getTodoByAlertAt(LocalDateTime alertAt) {
         List<GetTodoByAlertTimeResDTO> response = new ArrayList<>();
 
-        List<Todo> todos = todoRepository.getAllTodoByAlertAt(dateTime);
+        List<Todo> todos = todoRepository.getAllTodoByAlertAt(alertAt);
         for (Todo todo : todos) {
             response.add(GetTodoByAlertTimeResDTO.builder().todoId(todo.getId())
                     .todoContent(todo.getContent()).build());
         }
-        return response;
+        return GetTodoByAlertTimeResListDTO.builder().response(response).build();
     }
 
     @Override
