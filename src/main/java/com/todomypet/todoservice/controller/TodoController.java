@@ -95,7 +95,7 @@ public class TodoController {
     }
 
     @Hidden
-    @GetMapping("/todo/get-by-alert-time")
+    @PostMapping("/todo/get-by-alert-time")
     public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@RequestBody GetTodoByAlertTimeReqDTO req) {
         GetTodoByAlertTimeResListDTO response = todoService.getTodoByAlertAt(req.getAlertAt());
         return new SuccessResDTO<GetTodoByAlertTimeResListDTO>(response);
