@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -94,8 +95,8 @@ public class TodoController {
     }
 
     @Hidden
-    @GetMapping("/todo/get-by-alert-time/{alertAt}")
-    public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@PathVariable LocalDateTime alertAt) {
+    @GetMapping("/todo/get-by-alert-time")
+    public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@RequestParam("alertAt") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime alertAt) {
         GetTodoByAlertTimeResListDTO response = todoService.getTodoByAlertAt(alertAt);
         return new SuccessResDTO<GetTodoByAlertTimeResListDTO>(response);
     }
