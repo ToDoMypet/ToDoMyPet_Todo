@@ -24,7 +24,7 @@ public interface TodoService {
 
     String endTheRepeatTodo(String userId, EndTheRepeatTodoReqDTO req);
 
-    GetTodoByAlertTimeResListDTO getTodoByAlertAt(LocalDateTime alertAt);
+    List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(LocalDateTime alertAt);
 
     void deleteAllCategoryAndTodoByUserId(String userId);
 }

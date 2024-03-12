@@ -88,16 +88,17 @@ public class TodoController {
     }
 
     @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다.")
-    @GetMapping("/todo/daily/{day}")
+    @PostMapping("/todo/daily/{day}")
     public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {
         List<GetTodoByDayResDTO> response = todoService.getTodoByDay(userId, day);
         return new SuccessResDTO<>(response);
     }
 
     @Hidden
-    @GetMapping("/todo/get-by-alert-time/{alertAt}")
-    public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@PathVariable LocalDateTime alertAt) {
-        GetTodoByAlertTimeResListDTO response = todoService.getTodoByAlertAt(alertAt);
+    @PostMapping("/todo/get-by-alert-time")
+    public SuccessResDTO<GetTodoByAlertTimeResListDTO> getByAlertTime(@RequestBody GetTodoByAlertTimeReqDTO req) {
+        GetTodoByAlertTimeResListDTO response = GetTodoByAlertTimeResListDTO.builder()
+                .response(todoService.getTodoByAlertAt(req.getAlertAt())).build();
         return new SuccessResDTO<GetTodoByAlertTimeResListDTO>(response);
     }
 

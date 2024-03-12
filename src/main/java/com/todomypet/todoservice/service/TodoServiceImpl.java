@@ -376,7 +376,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public GetTodoByAlertTimeResListDTO getTodoByAlertAt(LocalDateTime alertAt) {
+    public List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(LocalDateTime alertAt) {
         List<GetTodoByAlertTimeResDTO> response = new ArrayList<>();
 
         List<Todo> todos = todoRepository.getAllTodoByAlertAt(alertAt);
@@ -384,7 +384,7 @@ public class TodoServiceImpl implements TodoService {
             response.add(GetTodoByAlertTimeResDTO.builder().todoId(todo.getId())
                     .todoContent(todo.getContent()).build());
         }
-        return GetTodoByAlertTimeResListDTO.builder().response(response).build();
+        return response;
     }
 
     @Override

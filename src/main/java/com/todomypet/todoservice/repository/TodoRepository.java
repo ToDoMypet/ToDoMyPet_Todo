@@ -42,9 +42,10 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     Optional<Todo> getTodoByUserIdAndTodoId(String userId, String todoId);
 
     @Query("MATCH (u:User {id:$userId})-[:HAVE]->(c:Category)-[:INCLUDE]->(t:Todo) " +
-            "WHERE (date({year:$preYear, month:$preMonth, day:1}) <= t.startedAtDate <= date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}) OR " +
+            "WHERE ((date({year:$preYear, month:$preMonth, day:1}) <= t.startedAtDate <= date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}) OR " +
             "date({year:$preYear, month:$preMonth, day:1}) <= t.endedAtDate <= date({year:$postYear, month:$postMonth, day:$dayOfPostMonth})) OR " +
-            "(t.startedAtDate < date({year:$preYear, month:$preMonth, day:1}) AND t.endedAtDate > date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}))" +
+            "(t.startedAtDate < date({year:$preYear, month:$preMonth, day:1}) AND t.endedAtDate > date({year:$postYear, month:$postMonth, day:$dayOfPostMonth}))) AND " +
+            "t.markOnTheCalenderOrNot = true " +
             "RETURN DISTINCT t ORDER BY t.id ASC")
     List<Todo> getAllTodoByUserAndMonth(String userId, int preYear, int preMonth,
                                         int postYear, int postMonth, int dayOfPostMonth);
