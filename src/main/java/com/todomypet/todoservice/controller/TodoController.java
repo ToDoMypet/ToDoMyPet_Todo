@@ -88,7 +88,7 @@ public class TodoController {
     }
 
     @Operation(summary = "일별 투두 조회", description = "일별 투두를 조회합니다. {day}는 YYYY-MM-dd 형태로 조회합니다.")
-    @PostMapping("/todo/daily/{day}")
+    @GetMapping("/todo/daily/{day}")
     public SuccessResDTO<List<GetTodoByDayResDTO>> getTodoByDay(@RequestHeader String userId, @PathVariable String day) {
         List<GetTodoByDayResDTO> response = todoService.getTodoByDay(userId, day);
         return new SuccessResDTO<>(response);
