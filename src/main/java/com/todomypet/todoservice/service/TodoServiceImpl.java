@@ -167,13 +167,13 @@ public class TodoServiceImpl implements TodoService {
             if (todo.getEndedAtDate() == null) {
                 response.add(GetTodoByMonthResDTO.builder().id(todo.getId()).todoContent(todo.getContent())
                         .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(null)
-                        .categoryTextColorCode(have.getBgCode())
-                        .categoryBgColorCode(have.getTextCode()).build());
+                        .categoryTextColorCode(have.getTextCode())
+                        .categoryBgColorCode(have.getBgCode()).build());
             } else {
                 response.add(GetTodoByMonthResDTO.builder().id(todo.getId()).todoContent(todo.getContent())
                         .todoStartedAt(todo.getStartedAtDate().toString()).todoEndedAt(todo.getEndedAtDate().toString())
-                        .categoryTextColorCode(have.getBgCode())
-                        .categoryBgColorCode(have.getTextCode()).build());
+                        .categoryTextColorCode(have.getTextCode())
+                        .categoryBgColorCode(have.getBgCode()).build());
             }
         }
 
