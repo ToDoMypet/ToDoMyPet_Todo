@@ -1,6 +1,7 @@
 package com.todomypet.todoservice.service;
 
 import com.todomypet.todoservice.dto.color.AddColorReqDTO;
+import com.todomypet.todoservice.dto.color.AddColorReqListDTO;
 import com.todomypet.todoservice.dto.color.GetAllColorsResDTO;
 import com.todomypet.todoservice.mapper.ColorSetMapper;
 import com.todomypet.todoservice.domain.node.ColorSet;
@@ -19,8 +20,10 @@ public class ColorSetServiceImpl implements ColorSetService {
     private final ColorSetMapper colorSetMapper;
 
     @Override
-    public String addColor(AddColorReqDTO addColorReqDTO) {
-        return colorSetRepository.save(colorSetMapper.AddColorReqDTOToColorSet(addColorReqDTO)).getColorCode();
+    public void addColor(AddColorReqListDTO req) {
+        for (AddColorReqDTO addColor : req.getColorList()) {
+            colorSetRepository.save(colorSetMapper.AddColorReqDTOToColorSet(addColor));
+        }
     }
 
     @Override
