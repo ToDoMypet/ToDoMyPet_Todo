@@ -75,7 +75,7 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
 
     @Query("MATCH (t:Todo{id:$todoId}) SET t.content = $content, " +
             "t.receiveAlert = $receiveAlert, t.markOnTheCalenderOrNot = $markOnTheCalenderOrNot, t.alertAt = $alertAt, " +
-            "t.startedAtDate = $startedAtDate, t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime, t.alertType = $alertType")
+            "t.startedAtDate = $startedAtDate, t.alertType = $alertType")
     void updateTodoByTodoId(String todoId, String content, boolean receiveAlert, boolean markOnTheCalenderOrNot,
                             LocalDateTime alertAt, LocalDate startedAtDate, AlertType alertType);
 
