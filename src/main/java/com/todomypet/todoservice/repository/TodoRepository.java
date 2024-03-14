@@ -97,12 +97,12 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(:Category)-[:INCLUDE]->(t:Todo) DETACH DELETE t")
     void deleteAllTodoByUserId(String userId);
 
-    @Query("MATCH (t:Todo{$todoId}) SET t.startedAtTime = null")
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = null")
     void deleteStartedAtTime(String todoId);
 
-    @Query("MATCH (t:Todo{$todoId}) SET t.endedAtDate = null")
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = null")
     void deleteEndedAtDate(String todoId);
 
-    @Query("MATCH (t:Todo{$todoId}) SET t.endedAtTime = null")
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = null")
     void deleteEndedAtTime(String todoId);
 }
