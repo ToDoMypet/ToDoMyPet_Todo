@@ -5,7 +5,6 @@ import com.todomypet.todoservice.domain.node.Todo;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.swing.text.html.Option;
@@ -86,11 +85,24 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     @Query("MATCH (t:Todo{alertAt:$alertAt}) RETURN t")
     List<Todo> getAllTodoByAlertAt(LocalDateTime alertAt);
 
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime")
+    void updateTodoStartedAtTime(String todoId, LocalTime startedAtTime);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = $endedAtDate")
+    void updateTodoEndedAtDate(String todoId, LocalDate endedAtDate);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = $endedAtTime")
+    void updateTodoEndedAtTime(String todoId, LocalTime endedAtTime);
+
     @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(:Category)-[:INCLUDE]->(t:Todo) DETACH DELETE t")
     void deleteAllTodoByUserId(String userId);
 
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime")
-    void updateTodoDateTimeInfo(@Param("startedAtTime") LocalTime startedAtTime,
-                                @Param("endedAtDate") LocalDate endedAtDate,
-                                @Param("endedAtTime") LocalTime endedAtTime);
+    @Query("MATCH (t:Todo{$todoId}) SET t.startedAtTime = null")
+    void deleteStartedAtTime(String todoId);
+
+    @Query("MATCH (t:Todo{$todoId}) SET t.endedAtDate = null")
+    void deleteEndedAtDate(String todoId);
+
+    @Query("MATCH (t:Todo{$todoId}) SET t.endedAtTime = null")
+    void deleteEndedAtTime(String todoId);
 }

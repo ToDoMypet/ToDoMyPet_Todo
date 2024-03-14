@@ -294,21 +294,21 @@ public class TodoServiceImpl implements TodoService {
                     LocalDate.parse(todoInfo.getStartedAtDate()),
                     todoInfo.getAlertType());
 
-            LocalTime startedAtTime = null;
-            LocalDate endedAtDate = null;
-            LocalTime endedAtTime = null;
-
-            if (todoInfo.getStartedAtTime() != null) {
-                startedAtTime = LocalTime.parse(todoInfo.getStartedAtTime());
+            if (todoInfo.getStartedAtTime() == null) {
+                todoRepository.deleteStartedAtTime(todoId);
+            } else {
+                todoRepository.updateTodoStartedAtTime(todoId, LocalTime.parse(todoInfo.getStartedAtTime()));
             }
-            if (todoInfo.getEndedAtDate() != null) {
-                endedAtDate = LocalDate.parse(todoInfo.getEndedAtDate());
+            if (todoInfo.getEndedAtDate() == null) {
+                todoRepository.deleteEndedAtDate(todoId);
+            } else {
+                todoRepository.updateTodoEndedAtDate(todoId, LocalDate.parse(todoInfo.getEndedAtDate()));
             }
-            if (todoInfo.getEndedAtTime() != null) {
-                endedAtTime = LocalTime.parse(todoInfo.getEndedAtTime());
+            if (todoInfo.getEndedAtTime() == null) {
+                todoRepository.deleteEndedAtTime(todoId);
+            } else {
+                todoRepository.updateTodoEndedAtTime(todoId, LocalTime.parse(todoInfo.getEndedAtTime()));
             }
-
-            todoRepository.updateTodoDateTimeInfo(startedAtTime, endedAtDate, endedAtTime);
 
             return todoId;
         }
