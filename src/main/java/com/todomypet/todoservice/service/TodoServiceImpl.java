@@ -136,10 +136,8 @@ public class TodoServiceImpl implements TodoService {
                 CheckAchievementOrNotResDTO achievementOrNotRes = userServiceClient.checkAchieveOrNot(userId,
                         CheckAchieveOrNotReqDTO.builder().type(AchievementType.ACHIEVE).condition(condition)
                                 .build()).getData();
-                if (achievementOrNotRes.isAchieveOrNot()) {
-                    userServiceClient.achieve(userId, AchieveReqDTO.builder()
-                            .achievementId(achievementOrNotRes.getAchievementId()).build());
-                };
+                userServiceClient.achieve(userId, AchieveReqDTO.builder()
+                        .type(AchievementType.ACHIEVE).condition(condition).build());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);
