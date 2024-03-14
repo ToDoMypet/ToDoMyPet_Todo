@@ -291,7 +291,7 @@ public class TodoServiceImpl implements TodoService {
 
         if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
             TodoInfoReqDTO todoInfo = updateInfos.getTodoInfos().get(0);
-            todoRepository.updateTodoByTodoId(todoId, todoInfo.getContent(), todoInfo.isReceiveAlert(),
+            int n = todoRepository.updateTodoByTodoId(todoId, todoInfo.getContent(), todoInfo.isReceiveAlert(),
                     todoInfo.isMarkOnTheCalenderOrNot(), todoInfo.getAlertAt(),
                     LocalDate.parse(todoInfo.getStartedAtDate()),
                     todoInfo.getAlertType(), LocalTime.parse(todoInfo.getStartedAtTime()),
