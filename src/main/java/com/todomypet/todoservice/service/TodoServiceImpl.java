@@ -291,11 +291,26 @@ public class TodoServiceImpl implements TodoService {
 
         if (todo.getRepeatType() == RepeatType.NONE_REPEAT) {
             TodoInfoReqDTO todoInfo = updateInfos.getTodoInfos().get(0);
-            int n = todoRepository.updateTodoByTodoId(todoId, todoInfo.getContent(), todoInfo.isReceiveAlert(),
+            todoRepository.updateTodoByTodoId(todoId, todoInfo.getContent(), todoInfo.isReceiveAlert(),
                     todoInfo.isMarkOnTheCalenderOrNot(), todoInfo.getAlertAt(),
                     LocalDate.parse(todoInfo.getStartedAtDate()),
-                    todoInfo.getAlertType(), LocalTime.parse(todoInfo.getStartedAtTime()),
-                    LocalDate.parse(todoInfo.getEndedAtDate()), LocalTime.parse(todoInfo.getEndedAtTime()));
+                    todoInfo.getAlertType());
+
+            LocalTime startedAtTime = null;
+            LocalDate endedAtDate = null;
+            LocalTime endedAtTime = null;
+
+            if (todoInfo.getStartedAtTime() != null) {
+                startedAtTime = LocalTime.parse(todoInfo.getStartedAtTime());
+            }
+            if (todoInfo.getEndedAtDate() != null) {
+                endedAtDate = LocalDate.parse(todoInfo.getEndedAtDate());
+            }
+            if (todoInfo.getEndedAtTime() != null) {
+                endedAtTime = LocalTime.parse(todoInfo.getEndedAtTime());
+            }
+
+            todoRepository.updateTodoDateTimeInfo(startedAtTime, endedAtDate, endedAtTime);
 
             return todoId;
         }

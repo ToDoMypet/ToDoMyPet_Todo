@@ -76,9 +76,8 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     @Query("MATCH (t:Todo{id:$todoId}) SET t.content = $content, " +
             "t.receiveAlert = $receiveAlert, t.markOnTheCalenderOrNot = $markOnTheCalenderOrNot, t.alertAt = $alertAt, " +
             "t.startedAtDate = $startedAtDate, t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, t.endedAtTime = $endedAtTime, t.alertType = $alertType")
-    int updateTodoByTodoId(String todoId, String content, boolean receiveAlert, boolean markOnTheCalenderOrNot,
-                            LocalDateTime alertAt, LocalDate startedAtDate, AlertType alertType, LocalTime startedAtTime,
-                            LocalDate endedAtDate, LocalTime endedAtTime);
+    void updateTodoByTodoId(String todoId, String content, boolean receiveAlert, boolean markOnTheCalenderOrNot,
+                            LocalDateTime alertAt, LocalDate startedAtDate, AlertType alertType);
 
     @Query("MATCH (t:Todo{repeatCode:$repeatCode}) SET t.repeatEndDate = $repeatEndDate")
     void updateTodoRepeatEndDateByRepeatCode(String repeatCode, LocalDate repeatEndDate);
@@ -86,15 +85,9 @@ public interface TodoRepository extends Neo4jRepository<Todo, String> {
     @Query("MATCH (t:Todo{alertAt:$alertAt}) RETURN t")
     List<Todo> getAllTodoByAlertAt(LocalDateTime alertAt);
 
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime")
-    void updateTodoStartedAtTime(String todoId, LocalTime startedAtTime);
-
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtDate = $endedAtDate")
-    void updateTodoEndedAtDate(String todoId, LocalDate endedAtDate);
-
-    @Query("MATCH (t:Todo{id:$todoId}) SET t.endedAtTime = $endedAtTime")
-    void updateTodoEndedAtTime(String todoId, LocalTime endedAtTime);
-
     @Query("MATCH (u:User{id:$userId}) WITH u MATCH (u)-[:HAVE]->(:Category)-[:INCLUDE]->(t:Todo) DETACH DELETE t")
     void deleteAllTodoByUserId(String userId);
+
+    @Query("MATCH (t:Todo{id:$todoId}) SET t.startedAtTime = $startedAtTime, t.endedAtDate = $endedAtDate, endedAtTime = $endedAtTime")
+    void updateTodoDateTimeInfo(LocalTime startedAtTime, LocalDate endedAtDate, LocalTime endedAtTime);
 }
