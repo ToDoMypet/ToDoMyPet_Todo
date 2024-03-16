@@ -131,7 +131,6 @@ public class TodoServiceImpl implements TodoService {
                 String petSeq = petServiceClient.getMainPet(userId).getData();
                 petServiceClient.updateExperiencePoint(userId, UpdateExperiencePointReqDTO.builder()
                         .petSeqId(petSeq).experiencePoint(5).build());
-                int condition = userServiceClient.increaseAndGetTodoClearCount(userId).getData();
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new CustomException(ErrorCode.FEIGN_CLIENT_ERROR);
