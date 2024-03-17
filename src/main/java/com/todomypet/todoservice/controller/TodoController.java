@@ -5,6 +5,7 @@ import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.service.TodoService;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.Path;
@@ -107,5 +108,13 @@ public class TodoController {
     public SuccessResDTO<List<GetTodoByAlertTimeResDTO>> deleteAllCategoryAndTodoByUserId(@RequestHeader String userId) {
         todoService.deleteAllCategoryAndTodoByUserId(userId);
         return new SuccessResDTO<>(null);
+    }
+
+    @Operation(summary = "공휴일 조회", description = "공휴일 정보를 조회합니다. open api를 사용합니다.")
+    @GetMapping("/get-holiday-info/{solYear}/{solMonth}")
+    public SuccessResDTO<String> getHolidayInfo(@PathVariable String solYear,
+                                          @PathVariable String solMonth) {
+        String response = todoService.getHolidayInfo(solYear, solMonth);
+        return new SuccessResDTO<>(response);
     }
 }

@@ -1,15 +1,10 @@
 package com.todomypet.todoservice.service;
 
 import com.github.f4b6a3.ulid.UlidCreator;
-import com.todomypet.todoservice.domain.node.AchievementType;
 import com.todomypet.todoservice.domain.node.Category;
 import com.todomypet.todoservice.domain.node.RepeatType;
 import com.todomypet.todoservice.domain.node.Todo;
 import com.todomypet.todoservice.domain.relationship.Have;
-import com.todomypet.todoservice.domain.relationship.Include;
-import com.todomypet.todoservice.dto.openFeign.AchieveReqDTO;
-import com.todomypet.todoservice.dto.openFeign.CheckAchieveOrNotReqDTO;
-import com.todomypet.todoservice.dto.openFeign.CheckAchievementOrNotResDTO;
 import com.todomypet.todoservice.dto.openFeign.UpdateExperiencePointReqDTO;
 import com.todomypet.todoservice.dto.todo.*;
 import com.todomypet.todoservice.exception.CustomException;
@@ -22,6 +17,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -389,5 +387,43 @@ public class TodoServiceImpl implements TodoService {
     public void deleteAllCategoryAndTodoByUserId(String userId) {
         todoRepository.deleteAllTodoByUserId(userId);
         categoryRepository.deleteAllCategoryByUserId(userId);
+    }
+
+    @Override
+    public String getHolidayInfo(String solYear, String solMonth) {
+        String response = "";
+        try {
+            StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?");
+            sb.append("serviceKey=Rw4YdrK6RwpxZQhjWXfaqUybySBDQUaLQqR9xLLfEkqeTwqgDbuU7gzQpapJCbtnBOJN9zE%2BbJux9Jj5QYibZg%3D%3D");
+            sb.append("&solYear=").append(solYear);
+            sb.append("&solMonth=").append(solMonth);
+            sb.append("&_type=json");
+            URL url = new URL(sb.toString());
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-type", "application/json");
+
+            BufferedReader br;
+
+            if (conn.getResponseCode() == 200) {
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            }
+
+            StringBuilder sb2 = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb2.append(line);
+            }
+            br.close();
+            conn.disconnect();
+            response = sb2.toString();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return response;
     }
 }

@@ -27,4 +27,6 @@ public interface TodoService {
     List<GetTodoByAlertTimeResDTO> getTodoByAlertAt(LocalDateTime alertAt);
 
     void deleteAllCategoryAndTodoByUserId(String userId);
+
+    String getHolidayInfo(String solYear, String solMonth);
 }
