@@ -82,10 +82,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public UpdateCategoryResDTO updateCategory(String userId, String categoryId, UpdateCategoryReqDTO updateCategoryInfo) {
-        Category category = Category.builder()
-                .name(updateCategoryInfo.getName())
-                .id(String.valueOf(UlidCreator.getUlid())).build();
-
         String defaultCategoryId = categoryRepository.getDefaultCategoryIdByUserId(userId).getId();
 
         if (defaultCategoryId.equals(categoryId)) {
@@ -96,7 +92,9 @@ public class CategoryServiceImpl implements CategoryService {
             return UpdateCategoryResDTO.builder().duplicatedOrNot(true).categoryId(null).build();
         }
 
-        categoryRepository.updateCategoryName(categoryId, updateCategoryInfo.getName());
+        if (updateCategoryInfo.getName() != null) {
+            categoryRepository.updateCategoryName(categoryId, updateCategoryInfo.getName());
+        }
 
         ColorSet colorSet = colorSetRepository.getColorSetByColorCode(updateCategoryInfo.getColorCode());
 
